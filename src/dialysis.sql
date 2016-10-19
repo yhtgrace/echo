@@ -1,5 +1,7 @@
 -- Modified rrt.sql to give chartdates associated with every dialysis event
 
+DROP MATERIALIZED VIEW IF EXISTS dialysis cascade;
+
 CREATE MATERIALIZED VIEW dialysis as 
 
 WITH cv AS ( 

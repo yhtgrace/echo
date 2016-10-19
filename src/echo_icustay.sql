@@ -2,7 +2,7 @@
 -- an echo. Filter hadm_ids which have multiple icustay_ids.  
 DROP MATERIALIZED VIEW IF EXISTS echo_icustay CASCADE; 
 
-CREATE MATERIALIZED VIEW echo_icustay as  
+CREATE MATERIALIZED VIEW echo_icustay AS  
 
 WITH echo_icustay AS (
 
@@ -27,6 +27,7 @@ WITH echo_icustay AS (
     , adm.dischtime -- hospital discharge time
     , adm.ethnicity
     , ROUND( (CAST(adm.admittime AS DATE) - CAST(pat.dob AS DATE))  / 365.242, 4) AS age
+    , adm.diagnosis
 
 
     -- echos

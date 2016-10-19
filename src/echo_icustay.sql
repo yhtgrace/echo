@@ -15,14 +15,16 @@ WITH echo_icustay AS (
     , CASE
         WHEN DENSE_RANK() OVER (PARTITION BY ie.hadm_id ORDER BY ie.intime) = 1 THEN 'Y'
         ELSE 'N' END AS first_icu_stay
+    , ie.outtime -- icu outtime 
 
     -- patient 
     , pat.gender
     , pat.subject_id
+    , pat.dod
 
     -- hospital 
     , adm.admittime
-    , adm.dischtime
+    , adm.dischtime -- hospital discharge time
     , adm.ethnicity
     , ROUND( (CAST(adm.admittime AS DATE) - CAST(pat.dob AS DATE))  / 365.242, 4) AS age
 

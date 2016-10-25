@@ -1,0 +1,1 @@
+COPY (SELECT * FROM d_prescriptions) TO STDOUT WITH CSV HEADER

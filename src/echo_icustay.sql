@@ -11,7 +11,7 @@ WITH echo_icustay AS (
     -- icustay 
     , ie.icustay_id
     , ROUND( (CAST(ie.outtime AS DATE) - CAST(ie.intime AS DATE)), 4) AS los_icu
-    , DENSE_RANK() OVER (PARTITION BY ie.hadm_id ORDER BY ie.intime) AS icustay_seq
+    , DENSE_RANK() OVER (PARTITION BY ie.subject_id ORDER BY ie.intime) AS icustay_seq
     , CASE
         WHEN DENSE_RANK() OVER (PARTITION BY ie.hadm_id ORDER BY ie.intime) = 1 THEN 'Y'
         ELSE 'N' END AS first_icu_stay
@@ -26,7 +26,8 @@ WITH echo_icustay AS (
     , adm.admittime
     , adm.dischtime -- hospital discharge time
     , adm.ethnicity
-    , ROUND( (CAST(adm.admittime AS DATE) - CAST(pat.dob AS DATE))  / 365.242, 4) AS age
+    , age(adm.admittime, pat.dob) AS age
+    -- , ROUND( (CAST(adm.admittime AS DATE) - CAST(pat.dob AS DATE))  / 365.242, 4) AS age
     , adm.diagnosis
 
 
@@ -52,8 +53,9 @@ max_icustay_seq AS (
 
 SELECT eis.*, mis.max_icustay_seq
     , (( eis.time_to_echo > INTERVAL '-8 hours') AND 
-        (eis.time_to_echo < INTERVAL '48 hours')) AS time_filter 
+        (eis.time_to_echo < INTERVAL '48 hours')) AS time_filter
+    , max_icustay_seq = 1 AS single_stay_filter
+    , eis.age > INTERVAL '18 years' AS age_filter
 FROM echo_icustay eis
 INNER JOIN max_icustay_seq mis
     ON eis.hadm_id = mis.hadm_id
-WHERE max_icustay_seq = 1

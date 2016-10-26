@@ -1,1 +1,5 @@
+# notebook checkpoints
 *ipynb_checkpoints
+
+#vim temp files
+*.swp

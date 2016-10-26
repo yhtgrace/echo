@@ -1,0 +1,17 @@
+Time of first:
+    1. ventilation
+    2. sedative
+    3. pressor
+
+Dialysis:
+    1. Day of dialysis
+    2. icd9 code for end stage renal disease
+    3. Dialysis in ICU as a flag
+
+TODO:
+    1. List of labs for marking tests
+    2. Exclusion flow chart
+    3. End stage renal disease as comorbidities
+
+
+

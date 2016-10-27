@@ -5,3 +5,20 @@ Defining sepsis:
     4. not from blood clot
 
 How to exclude cardiac problems we want to exclude? (ie. which codes)
+
+TODO:
+1. Distribution of patients on different pressors, stratifiy by pressor vs. inotrope
+2. Intersect diagnoses ICD9 codes with actual codes occuring in MIMIC
+3. List of all lab item names
+4. Start list of all features of interest
+5. Fluids list of names
+
+Filtering steps:
+1. Echo w/in -8 to +48 hours of ICU
+2. ICU for sepsis (no cardiogenic shock at anytime during hospitalization)
+3. Age 18+ / demographics
+4. Most recent echo
+
+Stratify on:
+1. Ventilation
+2. Drugs administered

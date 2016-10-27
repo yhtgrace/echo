@@ -1,0 +1,7 @@
+Defining sepsis:
+    1. anyone on pressors
+    2. not from heart condition
+    3. not from bleeding
+    4. not from blood clot
+
+How to exclude cardiac problems we want to exclude? (ie. which codes)

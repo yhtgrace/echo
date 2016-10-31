@@ -9,5 +9,6 @@ SELECT DISTINCT ps.drug_type
     ,ps.formulary_drug_cd
     ,ps.gsn
     ,ps.ndc
-FROM prescriptions ps
+    ,ps.route
+FROM prescriptions ps;
 

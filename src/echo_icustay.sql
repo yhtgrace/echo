@@ -26,3 +26,4 @@ WITH echo_assigned AS (
     FROM echo_assigned ea
 )
 SELECT * FROM add_filters
+-- WHERE time_filter = True

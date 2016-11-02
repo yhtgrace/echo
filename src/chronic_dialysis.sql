@@ -1,4 +1,10 @@
-﻿SELECT subject_id, hadm_id, seq_num, icd9_code
+﻿set search_path to mimiciii;
+
+DROP MATERIALIZED VIEW IF EXISTS chronic_dialysis CASCADE; 
+
+CREATE MATERIALIZED VIEW chronic_dialysis AS  
+
+SELECT subject_id, hadm_id, seq_num, icd9_code
   FROM mimiciii.diagnoses_icd
   where icd9_code in (
 	 '5855' -- Chron kidney dis stage V
@@ -13,3 +19,6 @@
 	, '40492' -- Hy ht/kd NOS st V w/o hf"
 	, '40493' -- Hyp ht/kd NOS st V w hf
 	)
+  order by subject_id
+
+	

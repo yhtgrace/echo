@@ -46,7 +46,8 @@ WITH echo_ps AS (
         OR concat(ep.drug, ep.drug_name_poe, ep.drug_name_generic) ~* '.*vasopressin.*'  
         OR concat(ep.drug, ep.drug_name_poe, ep.drug_name_generic) ~* '.*isoprenaline.*'  
         OR concat(ep.drug, ep.drug_name_poe, ep.drug_name_generic) ~* '.*terlipressin.*' 
-    ) AND route ~* '.*iv.*'
+    ) AND ( route ~* '.*iv.*') 
+      AND ( NOT ep.drug ~* '.*epipen.*')
 )
 -- and count the number of icustays associated with each prescription
 , ps_count AS (

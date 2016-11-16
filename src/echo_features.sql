@@ -2,7 +2,7 @@ DROP MATERIALIZED VIEW IF EXISTS echo_features CASCADE;
 
 CREATE MATERIALIZED VIEW echo_features AS
 
-WITH admission_chart AS (
+WITH chart AS (
 
 SELECT DISTINCT ON(ce.icustay_id, ce.itemid, ce.valuenum) ce.icustay_id 
     ,ce.charttime AS item_charttime
@@ -41,4 +41,4 @@ LEFT JOIN echo_filter ef
 
 ) 
 
-SELECT * FROM admission_chart
+SELECT * FROM chart

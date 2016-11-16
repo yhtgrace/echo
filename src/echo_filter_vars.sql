@@ -1,9 +1,8 @@
-DROP MATERIALIZED VIEW IF EXISTS echo_filter CASCADE;
+DROP MATERIALIZED VIEW IF EXISTS echo_filter_vars CASCADE;
 
-CREATE MATERIALIZED VIEW echo_filter AS
+CREATE MATERIALIZED VIEW echo_filter_vars AS
 
 WITH
--- determine if an echo_icustay is associated with a vasopressor  
   echo_vaso AS (
     SELECT DISTINCT ps.icustay_id
         , 1 AS ps_vaso
@@ -16,30 +15,37 @@ WITH
          AND ps.drug_name_generic   IS NOT DISTINCT FROM dpv.drug_name_generic
          AND ps.route               IS NOT DISTINCT FROM dpv.route )
 )
+, echo_diagnosis_xc AS (
+    SELECT DISTINCT ei.hadm_id
+        , 1 as diag_xc
+    FROM d_diagnoses_xc_annot dx
+    INNER JOIN diagnoses_icd di
+        ON di.icd9_code = dx.icd9_code
+    INNER JOIN echo_icustay ei
+        ON di.hadm_id = ei.hadm_id 
+    WHERE dx.exclude = 1
+)
 -- compute new variables
 , echo_ext AS (
-    SELECT ei.*
+    SELECT ei.*, pt.subject_id
         -- time of echo wrt icustay intime and outtime
         ,(ei.charttime - ei.intime) AS intime_to_echo
         ,(ei.outtime - ei.charttime) AS echo_to_outtime
         -- whether or not patient was on a vasopressor during the icustay
         ,ev.ps_vaso IS NOT NULL AS ps_vaso
+        -- whether or not patient has an excluded diagnosis during the hospital admission
+        ,edx.diag_xc IS NOT NULL as diag_xc
         -- age on admission to the icu
         ,age(ei.intime, pt.dob) AS age_at_intime
     FROM echo_icustay ei
     LEFT JOIN echo_vaso ev
         ON ei.icustay_id = ev.icustay_id
+    LEFT JOIN echo_diagnosis_xc edx
+        ON ei.hadm_id = edx.hadm_id
     INNER JOIN icustays ic
         ON ei.icustay_id = ic.icustay_id
     INNER JOIN patients pt
         ON ic.subject_id = pt.subject_id
 )
--- proposed filters
-, add_filters AS (
-    SELECT *
-        -- time filter: echo within -8 to 48 hours of ICU stay
-        , ((ee.intime_to_echo > INTERVAL '-8 hours') AND 
-           (ee.intime_to_echo < INTERVAL '48 hours')) AS time_filter
-    FROM echo_ext ee
-)
-SELECT * FROM add_filters
+SELECT * FROM echo_ext
+

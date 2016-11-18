@@ -8,7 +8,7 @@ WITH
         , 1 AS ps_vaso
     FROM prescriptions ps 
     INNER JOIN echo_icustay ei
-        ON ei.icustay_id = ps.icustay_id
+        ON ei.icustay_id = ps.icustay_id -- join on icustay_id
     INNER JOIN d_prescriptions_vaso dpv
         ON ( ps.drug                IS NOT DISTINCT FROM dpv.drug
          AND ps.drug_name_poe       IS NOT DISTINCT FROM dpv.drug_name_poe
@@ -22,12 +22,12 @@ WITH
     INNER JOIN diagnoses_icd di
         ON di.icd9_code = dx.icd9_code
     INNER JOIN echo_icustay ei
-        ON di.hadm_id = ei.hadm_id 
+        ON di.hadm_id = ei.hadm_id -- join on hadm_id 
     WHERE dx.exclude = 1
 )
 -- compute new variables
 , echo_ext AS (
-    SELECT ei.*, pt.subject_id
+    SELECT ei.*
         -- time of echo wrt icustay intime and outtime
         ,(ei.charttime - ei.intime) AS intime_to_echo
         ,(ei.outtime - ei.charttime) AS echo_to_outtime
@@ -37,6 +37,7 @@ WITH
         ,edx.diag_xc IS NOT NULL as diag_xc
         -- age on admission to the icu
         ,age(ei.intime, pt.dob) AS age_at_intime
+        ,pt.dob AS dob
     FROM echo_icustay ei
     LEFT JOIN echo_vaso ev
         ON ei.icustay_id = ev.icustay_id

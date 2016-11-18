@@ -7,6 +7,7 @@ WITH add_filters AS (
         -- time filter: echo within -8 to 48 hours of ICU stay
         , ((ev.intime_to_echo > INTERVAL '-8 hours') AND 
            (ev.intime_to_echo < INTERVAL '48 hours')) AS time_filter
+        , (ev.age_at_intime > INTERVAL '18 years') AS age_filter
     FROM echo_filter_vars ev
 )
 
@@ -16,9 +17,6 @@ WHERE (
         ef.ps_vaso = True 
     AND ef.diag_xc = False
     AND ef.time_filter = True
+    AND ef.age_filter = True
 ) 
 
--- COUNT(DISTINCT subject_id) WHERE (ef.ps_vaso = True); 7897
--- COUNT(DISTINCT subject_id) WHERE (ef.diag_xc = False); 4937
--- COUNT(DISTINCT subject_id) WHERE (ef.diag_xc = False AND ef.ps_vaso = True); 2277
--- COUNT(DISTINCT subject_id) WHERE (ef.ps_vaso = True AND ef.diag_xc = False AND ef.time_filter = True); 1944

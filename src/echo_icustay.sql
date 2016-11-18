@@ -8,7 +8,7 @@ CREATE MATERIALIZED VIEW echo_icustay AS
 WITH echo_assigned AS ( 
     SELECT 
         ed.row_id, ed.charttime 
-        ,ie.icustay_id, ie.intime, ie.outtime, ie.hadm_id
+        ,ie.icustay_id, ie.hadm_id, ie.subject_id, ie.intime, ie.outtime
     FROM echodata ed
     INNER JOIN icustays ie
         ON ie.hadm_id = ed.hadm_id

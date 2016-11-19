@@ -11,7 +11,7 @@ SELECT DISTINCT ON(ce.icustay_id, ce.itemid, ce.valuenum) ce.icustay_id
     ,ce.valueuom AS item_valueuom
     ,ef.intime AS item_intime
 FROM chartevents ce
-LEFT JOIN echo_filter ef
+LEFT JOIN echo_filtered ef
     ON ce.icustay_id = ef.icustay_id
     WHERE (
         ce.itemid IN ('1394', '226707', '226730')

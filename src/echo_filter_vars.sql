@@ -37,16 +37,27 @@ WITH
         ,edx.diag_xc IS NOT NULL as diag_xc
         -- age on admission to the icu
         ,age(ei.intime, pt.dob) AS age_at_intime
-        ,pt.dob AS dob
+        -- time to most proximal outpatient echo before and after
+        ,eo.after_rowid
+        ,eo.before_rowid
+        ,eo.op_to_icu
+        ,eo.icu_to_op
     FROM echo_icustay ei
     LEFT JOIN echo_vaso ev
         ON ei.icustay_id = ev.icustay_id
     LEFT JOIN echo_diagnosis_xc edx
         ON ei.hadm_id = edx.hadm_id
+    LEFT JOIN echo_outpatient eo
+        ON ei.row_id = eo.icu_rowid
     INNER JOIN icustays ic
         ON ei.icustay_id = ic.icustay_id
     INNER JOIN patients pt
         ON ic.subject_id = pt.subject_id
 )
-SELECT * FROM echo_ext
+-- add filters
+SELECT *
+    , ((ee.intime_to_echo > INTERVAL '-8 hours') AND 
+       (ee.intime_to_echo < INTERVAL '48 hours')) AS time_filter
+    , (ee.age_at_intime > INTERVAL '18 years') AS age_filter
+FROM echo_ext ee
 

@@ -1,0 +1,16 @@
+====0
+TDI E/e' < 8, suggesting normal PCWP (<12mmHg)
+Transmitral Doppler E>A and TDI E/e' <8 suggesting normal diastolic function, and normal LV filling pressure (PCWP<12mmHg)
+TVI E/e' < 8, suggesting normal PCWP (<12mmHg)
+Transmitral Doppler and TVI c/w normal LV diastolic function
+Doppler parameters are most consistent with normal LV diastolic function
+====1
+TDI E/e' >15, suggesting PCWP>18mmHg
+TVI E/e' >15, suggesting PCWP>18mmHg
+Transmitral Doppler and TVI c/w Grade I (mild) LV diastolic dysfunction
+Transmitral Doppler and TVI c/w Grade II (moderate) LV diastolic dysfunction
+Transmitral Doppler and TVI c/w Grade III/IV (severe) LV diastolic dysfunction
+Doppler parameters are most consistent with Grade I (mild) LV diastolic dysfunction
+Doppler parameters are most consistent with c/w Grade II (moderate) LV diastolic dysfunction
+TVI e'<0.08m/s c/w elevated LV filling pressures
+Doppler parameters are most consistent with Grade III/IV (severe) LV diastolic dysfunction

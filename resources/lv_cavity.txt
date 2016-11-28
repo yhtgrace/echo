@@ -1,0 +1,40 @@
+====-1
+Small LV cavity
+The left ventricular cavity is unusually small
+====0
+Normal LV cavity size
+Normal LV wall thickness, cavity size and regional/global systolic function (LVEF >55%)
+The left ventricular cavity size is normal
+Normal LV wall thickness and cavity size
+Mild symmetric LVH with normal cavity size
+Normal LV wall thickness, cavity size, and systolic function (LVEF>55%)
+Mild symmetric LVH with normal cavity size and regional/global systolic function (LVEF>55%)
+Normal LV wall thickness, cavity size, and global systolic function (LVEF>55%)
+Left ventricular wall thickness, cavity size, and systolic function are normal (LVEF>55%)
+Normal LV wall thicknesses and cavity size
+Mild symmetric LVH with normal cavity size and systolic function (LVEF>55%)
+Left ventricular wall thicknesses and cavity size are normal
+Mild symmetric LVH with normal cavity size and global systolic function (LVEF>55%)
+There is mild symmetric left ventricular hypertrophy with normal cavity size and systolic function (LVEF>55%)
+There is mild symmetric left ventricular hypertrophy with normal cavity size
+The left ventricular cavity size is top normal/borderline dilated
+Normal LV wall thickness, cavity size, and global function (LVEF>55%)
+Left ventricular wall thickness, cavity size, and systolic function are normal
+LV cavity normal for BSA
+There is mild symmetric left ventricular hypertrophy with normal cavity size and systolic function
+Top /borderline dilated LV cavity size
+Normal LV thickness and cavity size
+Normal LV wall thickness, cavity size and regional/global function (LVEF >55%)
+Top normal/borderline dilated LV cavity size
+====1
+Mildly dilated LV cavity
+The left ventricular cavity is mildly dilated
+Dilated LV cavity
+The left ventricular cavity is dilated
+Mildly dilatd LV cavity
+====2
+Moderately dilated LV cavity
+The left ventricular cavity is moderately dilated
+====3
+Severely dilated LV cavity
+The left ventricular cavity is severely dilated

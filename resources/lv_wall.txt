@@ -1,0 +1,36 @@
+====0
+Normal LV wall thickness
+Normal LV wall thickness, cavity size and regional/global systolic function (LVEF >55%)
+Normal LV wall thickness and cavity size
+Normal LV wall thickness, cavity size, and systolic function (LVEF>55%)
+Left ventricular wall thicknesses are normal
+Normal LV wall thickness, cavity size, and global systolic function (LVEF>55%)
+Left ventricular wall thickness, cavity size, and systolic function are normal (LVEF>55%)
+Normal LV wall thicknesses and cavity size
+Left ventricular wall thicknesses and cavity size are normal
+Left ventricular wall thickness, cavity size, and systolic function are normal
+Normal LV wall thickness, cavity size, and global function (LVEF>55%)
+Normal LV thickness and cavity size
+Normal LV thickness
+Normal LV wall thickness, cavity size and regional/global function (LVEF >55%)
+====1
+Mild symmetric LVH
+Mild symmetric LVH with normal cavity size
+Mild symmetric LVH with normal cavity size and regional/global systolic function (LVEF>55%)
+There is mild symmetric left ventricular hypertrophy
+Mild symmetric LVH with normal cavity size and systolic function (LVEF>55%)
+Mild symmetric LVH with normal cavity size and global systolic function (LVEF>55%)
+There is mild symmetric left ventricular hypertrophy with normal cavity size and systolic function (LVEF>55%)
+Symmetric LVH
+There is mild concentric left ventricular hypertrophy
+There is mild symmetric left ventricular hypertrophy with normal cavity size and systolic function
+There is concentric left ventricular hypertrophy
+symmetric LVH
+There is mild symmetric left ventricular hypertrophy with normal cavity size
+There is symmetric left ventricular hypertrophy
+====2
+Moderate symmetric LVH
+There is moderate symmetric left ventricular hypertrophy
+====3
+Severe symmetric LVH
+There is severe symmetric left ventricular hypertrophy

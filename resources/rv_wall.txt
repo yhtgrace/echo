@@ -1,0 +1,9 @@
+====0
+Normal RV wall thickness
+The right ventricular wall thickness is normal
+Normal RV free wall thickness
+Right ventricular chamber size and free motion are normal
+Normal RV free thickness
+====1
+RV hypertrophy
+The right ventricular free wall is hypertrophied

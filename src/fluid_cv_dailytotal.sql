@@ -132,13 +132,13 @@ WITH patient_fluid AS
 	   --ORDER  BY row_id, starttime
 )
 , dailysplit AS (
-	SELECT *, (endtime-starttime) as duration, cast(starttime as date) dateStart,
+	SELECT *, (endtime-starttime) as duration, cast(starttime as date) chartdate,
 		CASE WHEN rate isnull then amount ELSE rate*extract( epoch from (endtime-starttime)/3600) END as amount_ml
 		FROM dates
 		order by subject_id, icustay_id, starttime
 )
 
-select subject_id, hadm_id, icustay_id, datestart, sum(amount_ml) as dailytotal_ml
+select subject_id, hadm_id, icustay_id, chartdate, sum(amount_ml) as dailytotal_ml
 from dailysplit
-group by datestart, subject_id, icustay_id, hadm_id
-order by icustay_id, datestart
+group by chartdate, subject_id, icustay_id, hadm_id
+order by icustay_id, chartdate

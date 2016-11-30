@@ -1,0 +1,50 @@
+====-1
+Hyperdynamic LVEF >75%
+Hyperdynamic LVEF
+Left ventricular systolic function is hyperdynamic (EF>75%)
+Hyperdynamic left ventricular systolic function
+Hyperdynamic LVEF (>75%)
+====0
+Overall normal LVEF (>55%)
+Normal LV wall thickness, cavity size and regional/global systolic function (LVEF >55%)
+Low normal LVEF
+Normal LV wall thickness, cavity size, and systolic function (LVEF>55%)
+Mild symmetric LVH with normal cavity size and regional/global systolic function (LVEF>55%)
+Overall left ventricular systolic function is normal (LVEF>55%)
+Normal LV wall thickness, cavity size, and global systolic function (LVEF>55%)
+Left ventricular wall thickness, cavity size, and systolic function are normal (LVEF>55%)
+Mild symmetric LVH with normal cavity size and systolic function (LVEF>55%)
+Mild symmetric LVH with normal cavity size and global systolic function (LVEF>55%)
+Overall left ventricular systolic function is low normal (LVEF 50-55%)
+There is mild symmetric left ventricular hypertrophy with normal cavity size and systolic function (LVEF>55%)
+Normal LV wall thickness, cavity size and regional/global function (LVEF >55%)
+Normal LV wall thickness, cavity size, and global function (LVEF>55%)
+Left ventricular wall thickness, cavity size, and systolic function are normal
+There is mild symmetric left ventricular hypertrophy with normal cavity size and systolic function
+Low normal LVEF (50-55%)
+====1
+Mildly depressed LVEF
+Mild global LV hypokinesis
+Depressed LVEF
+Overall left ventricular systolic function is mildly depressed
+depressed LVEF
+Mildly depressed LVEF (40-55%)
+global LV hypokinesis
+LV systolic function appears depressed
+There is mild global left ventricular hypokinesis
+Intrinsic LV systolic function depressed given the severity of valvular regurgitation
+====2
+Moderately depressed LVEF
+Overall left ventricular systolic function is moderately depressed
+Moderate global LV hypokinesis
+There is moderate global left ventricular hypokinesis
+Mild-moderate global left ventricular hypokinesis
+Moderately depressed LVEF (30-39%)
+====3
+Severely depressed LVEF
+Severe global LV hypokinesis
+Overall left ventricular systolic function is severely depressed
+There is severe global left ventricular hypokinesis
+Moderate-severe global left ventricular hypokinesis
+Severely depressed LVEF (<30%)
+-severe global left ventricular hypokinesis

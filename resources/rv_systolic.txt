@@ -1,0 +1,34 @@
+====0
+Normal RV chamber size and free wall motion
+Right ventricular chamber size and free wall motion are normal
+Normal RV systolic function
+Right ventricular systolic function is borderline normal
+Borderline normal RV systolic function
+Right ventricular systolic function is normal
+Right ventricular chamber size and systolic function are normal
+TASPE normal (>=1.6cm) Nl interventricular septal motion
+TASPE normal (>=1.6cm)
+Normal RV chamber size and free motion
+Normal RV function
+====1
+Mild global RV free wall hypokinesis
+There is mild global right ventricular free wall hypokinesis
+Right ventricular systolic function appears depressed
+RV function depressed
+Mild global RV free hypokinesis
+TASPE depressed (<1.6cm)
+TASPE depressed (<1.6cm) RV function depressed
+TASPE depressed (<1.6cm) Abnormal systolic septal motion/position consistent with RV pressure overload
+TASPE depressed (<1.6cm) Abnormal septal motion/position consistent with RV pressure/volume overload
+TASPE depressed (<1.6cm) Intrinsic RV systolic function likely more depressed given the severity of TR
+TASPE depressed (<1.6cm) Paradoxic septal motion consistent with conduction abnormality/ventricular pacing
+TASPE depressed (<1.6cm) Nl interventricular septal motion
+TASPE depressed (<1.6cm) Paradoxic septal motion consistent with prior cardiac surgery
+TASPE depressed (<1.6cm) Abnormal septal motion/position
+====2
+There is moderate global right ventricular free wall hypokinesis
+Moderate global RV free wall hypokinesis
+Moderate global RV free hypokinesis
+====3
+There is severe global right ventricular free wall hypokinesis
+Severe global RV free wall hypokinesis

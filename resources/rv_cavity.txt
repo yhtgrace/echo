@@ -1,0 +1,22 @@
+====-1
+Small RV cavity
+The right ventricular cavity is unusually small
+====0
+Normal RV chamber size and free wall motion
+Right ventricular chamber size and free wall motion are normal
+Normal RV chamber size
+Right ventricular chamber size is normal
+Right ventricular chamber size and systolic function are normal
+Normal RV chamber size and free motion
+Right ventricular chamber size and free motion are normal
+====1
+Mildly dilated RV cavity
+Dilated RV cavity
+The right ventricular cavity is dilated
+The right ventricular cavity is mildly dilated
+dilated RV cavity
+====2
+Moderately dilated RV cavity
+Markedly dilated RV cavity
+The right ventricular cavity is moderately dilated
+The right ventricular cavity is markedly dilated

@@ -20,6 +20,8 @@ eid AS (
         ,CASE WHEN did.long_title ~* '.*hemorrhag.*' THEN 1 ELSE 0 END AS k_hemorrhag
         ,CASE WHEN did.long_title ~* '.*bleed.*' THEN 1 ELSE 0 END AS k_bleed
         ,CASE WHEN did.long_title ~* '.*embolism.*' THEN 1 ELSE 0 END AS k_embolism
+        ,CASE WHEN did.long_title ~* '.*shock.*' THEN 1 ELSE 0 END AS k_shock
+        ,CASE WHEN did.long_title ~* '.*clot.*' THEN 1 ELSE 0 END AS k_clot
     FROM d_icd_diagnoses did
     RIGHT JOIN di
         ON did.icd9_code = di.icd9_code
@@ -29,6 +31,8 @@ eid AS (
         OR did.long_title ~* '.*hemorrhag.*'
         OR did.long_title ~* '.*bleed.*'
         OR did.long_title ~* '.*embolism.*'
+        OR did.long_title ~* '.*shock.*'
+        OR did.long_title ~* '.*clot.*'
 ),
 eidc AS (
     SELECT icd9_code 
@@ -39,6 +43,7 @@ eidc AS (
 SELECT DISTINCT ON(eid.icd9_code)
      eid.icd9_code, eid.short_title, eid.long_title
     ,eid.k_card, eid.k_heart, eid.k_hemorrhag, eid.k_bleed, eid.k_embolism
+    ,eid.k_shock, eid.k_clot
     ,eidc.num 
 FROM eid
 INNER JOIN eidc

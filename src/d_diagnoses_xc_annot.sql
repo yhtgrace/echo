@@ -19,4 +19,4 @@ CREATE TABLE d_diagnoses_xc_annot
 );
 
 -- set path to csv
-COPY d_diagnoses_xc_annot FROM '/Users/yhtgrace/Documents/projects/echo/data/generated/D_DIAGNOSES_XC_ANNOT.csv' CSV HEADER;
+COPY d_diagnoses_xc_annot FROM '/abs/path/to/resources/d_diagnoses_xc_annot.csv' CSV HEADER;

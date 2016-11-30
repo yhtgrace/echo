@@ -2,43 +2,34 @@ DROP MATERIALIZED VIEW IF EXISTS echo_features CASCADE;
 
 CREATE MATERIALIZED VIEW echo_features AS
 
-WITH chart AS (
+SELECT ef.row_id, ef.icustay_id, ef.hadm_id, ef.subject_id 
 
-SELECT DISTINCT ON(ce.icustay_id, ce.itemid, ce.valuenum) ce.icustay_id 
-    ,ce.charttime AS item_charttime
-    ,ce.valuenum AS item_valuenum
-    ,ce.itemid AS item_itemid
-    ,ce.valueuom AS item_valueuom
-    ,ef.intime AS item_intime
-FROM chartevents ce
-LEFT JOIN echo_filtered ef
-    ON ce.icustay_id = ef.icustay_id
-    WHERE (
-        ce.itemid IN ('1394', '226707', '226730')
-    )
-)
+    -- demographics
+    ,ef.age_at_intime -- age at admission to ICU
+    ,pt.gender -- gender
+    ,ed.height -- height from echo chart
+    ,ed.weight -- weight from echo chart
+    -- bmi
+    ,am.ethnicity -- race
+    ,am.insurance -- insurance
 
-, echo_features AS (
+    -- timeline
+    ,am.admittime -- hospital admission date/time
+    ,am.dischtime -- hospital discharge date/time
+    ,ic.intime -- icustay in date/time
+    ,ic.outtime -- icustay out date/time
+   
+    -- outcomes
+    ,pt.dod -- date of death
+    ,pt.dod > ic.outtime AS survived_icustay-- survived icustay
+    ,pt.dod > am.dischtime AS survived_hadm-- survived hospital admission
 
-    SELECT ef.row_id, ef.icustay_id
-
-      -- demographics
-        ,pt.subject_id -- subject_id
-        ,pt.gender -- gender
-        ,ef.age_at_intime -- age at admission to ICU
-        -- height
-        -- weight
-        ,am.insurance -- insurance type
-        ,am.ethnicity -- ethnicity
-
-    FROM echo_filter ef 
-    INNER JOIN icustays ic
-        ON ef.icustay_id = ic.icustay_id
-    INNER JOIN patients pt
-        ON ic.subject_id = pt.subject_id
-    INNER JOIN admissions am
-        ON ef.hadm_id = am.hadm_id
-
-) 
-
-SELECT * FROM chart
+FROM echo_filtered ef
+INNER JOIN icustays ic
+    ON ef.icustay_id = ic.icustay_id
+INNER JOIN patients pt
+    ON ic.subject_id = pt.subject_id
+INNER JOIN admissions am
+    ON ef.hadm_id = am.hadm_id
+INNER JOIN echodata ed
+    ON ef.row_id = ed.row_id

@@ -1,13 +1,24 @@
--- labs of interest from d_labitems
+-- get labs of interest 
+-- at time of admission to ICU, at time of echo, at discharge from ICU
 
-DROP MATERIALIZED VIEW IF EXISTS d_labs_all CASCADE;
+-- do a preliminary check that labs are available
+-- that is, for each lab, count the number of unique hadm_ids
 
-CREATE MATERIALIZED VIEW d_labs_all AS 
+DROP MATERIALIZED VIEW IF EXISTS echo_features_labs CASCADE;
 
-WITH dl AS (
-    SELECT * 
-    FROM d_labitems
-    WHERE itemid IN ( 
+CREATE MATERIALIZED VIEW echo_features_labs AS
+
+WITH labs AS (
+
+    SELECT ef.row_id, ef.icustay_id, ef.hadm_id, ef.subject_id 
+        ,le.charttime
+        ,di.label
+    FROM echo_filtered ef
+    INNER JOIN labevents le
+        ON le.hadm_id = ef.hadm_id
+    INNER JOIN d_labitems di
+        ON di.itemid = le.itemid
+    WHERE le.itemid IN ( 
              '50820' -- pH
             ,'50862' -- Albumin
             ,'50889' -- Bicarbonate
@@ -28,9 +39,5 @@ WITH dl AS (
             ,'50963' -- NTProBNP
     )
 )
-, di AS (
-    SELECT *
-    FROM d_items
-    WHERE label ~* '.*albumin.*'
-)
-SELECT * FROM di; 
+
+SELECT * FROM labs

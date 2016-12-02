@@ -1,6 +1,6 @@
 -- for a clean copy of echo_filtered, run in order
 -- echo_icustay (25512)
--- diagnoses_xc_annot (392)
+-- d_diagnoses_xc_annot (392)
 -- d_prescriptions_vaso (49)
 -- echo_outpatient (4385)
 -- echo_filter_vars (25512)

@@ -1,0 +1,29 @@
+====0
+No tricuspid regurgitation is seen
+No TR
+Normal tricuspid valve leaflets with trivial TR
+Physiologic TR
+Physiologic tricuspid regurgitation is seen
+The tricuspid valve appears structurally normal with trivial tricuspid regurgitation
+The tricuspid valve appears structurally normal with trivial tricuspid regurgitaton
+====1
+Mild 1+ TR
+Mild to + TR
+Mild tricuspid regurgitation is seen
+Mild tricuspid 1+ regurgitation is seen
+Severe TS (TVA<1.0cm2) Mild 1+ TR
+====2
+Mild to moderate + TR
+Mild to moderate + tricuspid regurgitation is seen
+Mild to moderate tricuspid regurgitation is seen
+Moderate 2+ TR
+Moderate 2+ tricuspid regurgitation is seen
+2+ TR
+Moderate tricuspid regurgitation is seen
+====3
+Moderate to severe 3+ TR
+Moderate to severe 3+ tricuspid regurgitation is seen
+Moderate to severe tricuspid regurgitation is seen
+Severe 4+ TR
+Severe 4+ tricuspid regurgitation is seen
+Severe tricuspid regurgitation is seen

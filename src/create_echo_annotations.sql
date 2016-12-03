@@ -1,9 +1,10 @@
 ﻿-- Table: mimiciii.echo_annotations
 
--- DROP TABLE mimiciii.echo_annotations;
+--DROP TABLE mimiciii.echo_annotations_unique;
 
-CREATE TABLE mimiciii.echo_annotations
+CREATE TABLE mimiciii.echo_annotations_unique
 (
+  row_id serial primary key,
   subject_id integer NOT NULL,
   hadm_id integer NOT NULL,
   age double precision,
@@ -35,5 +36,5 @@ CREATE TABLE mimiciii.echo_annotations
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE mimiciii.echo_annotations
-  OWNER TO postgres;
+--ALTER TABLE mimiciii.echo_annnotations_unique
+--  OWNER TO postgres;

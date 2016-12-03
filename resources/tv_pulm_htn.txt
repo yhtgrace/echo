@@ -1,0 +1,22 @@
+====0
+Normal PA pressure
+Normal PA systolic pressure
+The estimated pulmonary artery systolic pressure is normal
+Borderline PA hypertension
+Borderline PA systolic hypertension
+There is borderline pulmonary artery systolic hypertension
+====1
+Mild PA hypertension
+Mild PA systolic hypertension
+There is mild pulmonary artery systolic hypertension
+PA systolic hypertension 
+====2
+Moderate PA hypertension
+Moderate PA systolic
+Moderate PA systolic hypertension
+There is moderate pulmonary artery systolic hypertension
+Mild to moderate hypertension
+====3
+ Severe PA systolic 
+Severe PA systolic hypertension
+There is severe pulmonary artery systolic hypertension

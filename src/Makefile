@@ -1,3 +1,5 @@
+#!/usr/bin/make -f
+
 DBNAME=mimic
 DBUSER=mimic
 SCHEMA=mimiciii

@@ -69,6 +69,10 @@ SELECT ef.row_id, ef.icustay_id, ef.hadm_id, ef.subject_id
     ,ef.after_rowid -- row_id of most proximal outpatient echo after this echo
     ,ef.before_rowid -- row_id of most proximal outpatient echo before this echo
 
+    -- ventilation features
+    ,vf.noninv_vent
+    ,vf.mech_vent
+
 FROM echo_filter_vars ef
 INNER JOIN icustays ic
     ON ef.icustay_id = ic.icustay_id
@@ -80,3 +84,5 @@ INNER JOIN echodata ed
     ON ef.row_id = ed.row_id
 INNER JOIN echo_features_labs ls
     ON ef.row_id = ls.row_id
+INNER JOIN ventfeatures vf
+    ON ef.row_id = vf.row_id

@@ -118,7 +118,6 @@ WITH patient_fluid AS
 	,'45073'--	IV fluid bolus
 	,'46207'--	OR LR
 	,'41380'--	nsbolus
-	,'47522.5158'--	.9% Normal Saline
 		) 
 )
 , dates AS (

@@ -34,7 +34,7 @@ WITH
         -- whether or not patient was on a vasopressor during the icustay
         ,ev.ps_vaso IS NOT NULL AS ps_vaso
         -- whether or not patient has an excluded diagnosis during the hospital admission
-        ,edx.diag_xc IS NOT NULL as diag_xc
+        ,edx.diag_xc IS NOT NULL AS diag_xc
         -- age on admission to the icu
         ,age(ei.intime, pt.dob) AS age_at_intime
         -- time to most proximal outpatient echo before and after
@@ -55,6 +55,7 @@ WITH
         ON ic.subject_id = pt.subject_id
 )
 -- add filters
+-- TODO: implement filter to remove echos if more than 3 echos in 1 icustay
 SELECT *
     , ((ee.intime_to_echo > INTERVAL '-8 hours') AND 
        (ee.intime_to_echo < INTERVAL '48 hours')) AS time_filter

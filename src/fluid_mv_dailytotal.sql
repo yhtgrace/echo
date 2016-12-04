@@ -26,16 +26,17 @@ WITH patient_fluid AS
 		,'225827' -- D5LR
 		,'225941' -- D5 1/4NS
 		,'226371' -- OR Cryoprecipitate Intake
-		,'225171' -- 	Cryoprecipitate	1073	1
-		,'226365' -- 	OR Colloid Intake	1002	1
-		,'226367' -- 	OR FFP Intake	998	1
-		,'226375' -- 	PACU Crystalloid Intake	441	1
-		,'226371' -- 	OR Cryoprecipitate Intake	196	1
-		,'227072' -- 	PACU FFP Intake	14	1
+		,'225171' -- 	Cryoprecipitate
+		,'226365' -- 	OR Colloid Intake
+		,'226367' -- 	OR FFP Intake
+		,'226375' -- 	PACU Crystalloid Intake
+		,'226371' -- 	OR Cryoprecipitate Intake	
+		,'227072' -- 	PACU FFP Intake	
 		) 
 		and amount > 0  -- amount can be negative, often for REWRITTEN orders.  
 		and cancelreason = 0 -- some orders are cancelled
-		and statusdescription ~= 'Rewritten'  -- not sure if this should be a filter.  
+		and statusdescription != 'Rewritten'  -- not sure if this should be a filter.
+		and ordercategoryname not like '%Pre Admission%' -- Pre Admission fluid can be very high and cover uncertain amount of time.  
 		--order by subject_id, starttime
 )
 , dates AS (

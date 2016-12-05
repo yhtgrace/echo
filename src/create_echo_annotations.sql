@@ -1,10 +1,10 @@
 ﻿-- Table: mimiciii.echo_annotations
 
---DROP TABLE mimiciii.echo_annotations_unique;
+DROP TABLE IF EXISTS mimiciii.echo_annotations_unique;
 
 CREATE TABLE mimiciii.echo_annotations_unique
 (
-  row_id serial primary key,
+  -- row_id serial primary key,
   subject_id integer NOT NULL,
   hadm_id integer NOT NULL,
   age double precision,
@@ -38,3 +38,4 @@ WITH (
 );
 --ALTER TABLE mimiciii.echo_annnotations_unique
 --  OWNER TO postgres;
+COPY mimiciii.echo_annotations_unique FROM '/resources/echo_ann_unique.csv' CSV HEADER;

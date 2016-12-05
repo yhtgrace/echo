@@ -25,6 +25,13 @@ WITH
         ON di.hadm_id = ei.hadm_id -- join on hadm_id 
     WHERE dx.exclude = 1
 )
+, echo_chronic_dialysis AS (
+    SELECT DISTINCT cd.hadm_id
+        , 1 as chronic_dial_flg
+    FROM chronic_dialysis cd
+    INNER JOIN echo_icustay ei 
+        ON cd.hadm_id = ei.hadm_id
+)
 -- compute new variables
 , echo_ext AS (
     SELECT ei.*
@@ -42,6 +49,8 @@ WITH
         ,eo.before_rowid
         ,eo.op_to_icu
         ,eo.icu_to_op
+        -- chronic dialysis flag
+        ,cd.chronic_dial_flg IS NOT NULL AS chronic_dialysis_flg
     FROM echo_icustay ei
     LEFT JOIN echo_vaso ev
         ON ei.icustay_id = ev.icustay_id
@@ -49,6 +58,8 @@ WITH
         ON ei.hadm_id = edx.hadm_id
     LEFT JOIN echo_outpatient eo
         ON ei.row_id = eo.icu_rowid
+    LEFT JOIN echo_chronic_dialysis cd
+        ON ei.hadm_id = cd.hadm_id
     INNER JOIN icustays ic
         ON ei.icustay_id = ic.icustay_id
     INNER JOIN patients pt

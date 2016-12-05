@@ -8,6 +8,8 @@ captain teemo on duty
 ```
 src/Makefile mimic-code/etc/echodata
 src/Makefile mimic-code/etc/ventilation-durations
+src/Makefile mimic-code/severityscores/apsiii
+src/Makefile mimic-code/comorbidity/elixhauser-ahrq-v37-with-drg.sql
 ```
 
 #### Build the individual echo features tables
@@ -47,6 +49,15 @@ src/Makefile src/echo_features_labs
 src/Makefile src/venttype
 src/Makefile src/ventfeatures
 ```
+
+#### Calculate if patient is on chronic dialysis 
+```
+src/Makefile src/chronic_dialysis
+```
+
+#### Load echo annotations
+```
+src/Makefile src/
 
 #### Build the master features table
 ```

@@ -4,9 +4,8 @@ DROP MATERIALIZED VIEW IF EXISTS fluid_cv_dailytotal CASCADE;
 
 CREATE MATERIALIZED VIEW fluid_cv_dailytotal AS 
 
-WITH patient_fluid AS 
-(
-	SELECT *
+
+	SELECT subject_id, hadm_id, icustay_id, cast(charttime as date) chartdate, sum(abs(value)) as dailytotal_ml
 	FROM mimiciii.inputevents_cv 
 	WHERE itemid in (
 	'30018'--	.9% Normal Saline
@@ -119,25 +118,4 @@ WITH patient_fluid AS
 	,'46207'--	OR LR
 	,'41380'--	nsbolus
 		) 
-)
-, dates AS (
-	SELECT row_id, subject_id, icustay_id, hadm_id, rate, amount
-	, CASE WHEN starttime::date = d THEN starttime ELSE d END AS starttime
-	  , CASE WHEN endtime::date = d THEN endtime ELSE d +  END AS endtime
-	  FROM patient_fluid t
-	  , LATERAL (SELECT d::date
-		FROM   generate_series(t.starttime::date, t.endtime::date, interval 'd') d
-		) d
-	   --ORDER  BY row_id, starttime
-)
-, dailysplit AS (
-	SELECT *, (endtime-starttime) as duration, cast(starttime as date) chartdate,
-		CASE WHEN rate isnull then amount ELSE rate*extract( epoch from (endtime-starttime)/3600) END as amount_ml
-		FROM dates
-		order by subject_id, icustay_id, starttime
-)
 
-select subject_id, hadm_id, icustay_id, chartdate, sum(amount_ml) as dailytotal_ml
-from dailysplit
-group by chartdate, subject_id, icustay_id, hadm_id
-order by icustay_id, chartdate

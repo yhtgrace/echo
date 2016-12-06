@@ -1,4 +1,8 @@
-﻿DROP MATERIALIZED VIEW IF EXISTS test_echo_fluid2 CASCADE;
+﻿---- Run these first: --
+-- echo_filter_vars_mx
+-- echo_filtered_mx
+
+DROP MATERIALIZED VIEW IF EXISTS test_echo_fluid2 CASCADE;
 
 CREATE MATERIALIZED VIEW test_echo_fluid2 AS
 

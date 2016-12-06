@@ -1,7 +1,5 @@
 # Team O
 
-captain teemo on duty 
-
 ## Building the features table
 
 #### First build the echodata and ventdurations tables using scripts from the mimic-code repository
@@ -57,7 +55,8 @@ src/Makefile src/chronic_dialysis
 
 #### Load echo annotations
 ```
-src/Makefile src/
+src/Makefile src/create_echo_annotations
+```
 
 #### Build the master features table
 ```

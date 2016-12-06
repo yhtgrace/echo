@@ -129,6 +129,7 @@ SELECT ef.row_id, ef.icustay_id, ef.hadm_id, ef.subject_id
     -- filters
     ,ef.ps_vaso -- if patient was on vasopressor during the icustay
     ,ef.diag_xc -- if patient has an excluded diagnosis during the hospital admission
+    ,ef.chronic_dialysis_flg
     ,ef.age_filter -- age filter
     ,ef.intime_to_echo -- icustay intime to echo
     ,ef.time_filter -- (icustay intime to echo) between -8 to 48 hours

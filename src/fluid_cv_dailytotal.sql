@@ -118,6 +118,8 @@ CREATE MATERIALIZED VIEW fluid_cv_dailytotal AS
 	,'46207'--	OR LR
 	,'41380'--	nsbolus
 ) 
+and amount > 0
+and amount < 100000
 group by chartdate, subject_id, icustay_id, hadm_id
 order by icustay_id, chartdate
 

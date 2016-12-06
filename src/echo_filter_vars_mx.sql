@@ -1,4 +1,15 @@
-﻿set search_path to mimiciii;
+﻿-- Run in order before echo_filter_vars_mx:
+-- echo_icustay
+-- chronic_dialysis
+-- apache from mimic-code
+-- load echo annotations
+-- fluid_cv_dailyinput
+-- fluid_mv_dailyinput
+-- fluid_dailybalance
+-- echo_first3day_fluid
+
+
+set search_path to mimiciii;
 DROP MATERIALIZED VIEW IF EXISTS echo_filter_vars_mx CASCADE;
 
 CREATE MATERIALIZED VIEW echo_filter_vars_mx AS
@@ -43,8 +54,7 @@ SELECT
         ---- echo data
         ,ed.indication, ed.height, ed.weight, ed.bsa, ed.bp, ed.bpsys, ed.bpdias, ed.hr, ed.test, ed.doppler, ed.contrast, ed.technicalquality
 	---- fluid data
-	--,fl.daily_input_ml, fl.daily_output_ml, fl.daily_balance_ml
-	--,(fl.chartdate - cast(ei.charttime as date)) as day_wrt_echo
+	--,fl.*
 	---- ventilation
 	,vf.mechvent as mechvent_flg
     FROM echo_icustay ei
@@ -58,8 +68,8 @@ SELECT
         ON ei.hadm_id = elix.hadm_id
     LEFT JOIN echo_d ed
         ON ei.row_id = ed.row_id
-    --LEFT JOIN fluid_dailybalance fl
-    --    ON ei.subject_id = fl.subject_id and cast(ei.charttime as date) = fl.chartdate
+    --LEFT JOIN echo_first3day_fluid fl
+     --   ON ei.row_id = fl.row_id
     LEFT JOIN ventfirstday vf
         ON ei.icustay_id = vf.icustay_id
     INNER JOIN icustays ic
@@ -68,6 +78,6 @@ SELECT
         ON ic.subject_id = pt.subject_id
 )
 -- add filters
--- TODO: implement filter to remove echos if more than 3 echos in 1 icustay
+-- TODO: implement filter to remove echos if more than 3 echos in 1 icustay?
 SELECT * FROM echo_ext
 

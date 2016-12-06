@@ -84,7 +84,8 @@ FROM
     else le.valuenum
     end as valuenum
 
-  FROM echo_filter_vars ef
+  --FROM echo_filter_vars ef
+  FROM echo_icustay ef
 
   LEFT JOIN labevents le
     on le.subject_id = ef.subject_id and le.hadm_id = ef.hadm_id

@@ -5,7 +5,7 @@ DROP MATERIALIZED VIEW IF EXISTS fluid_cv_dailytotal CASCADE;
 CREATE MATERIALIZED VIEW fluid_cv_dailytotal AS 
 
 
-	SELECT subject_id, hadm_id, icustay_id, cast(charttime as date) chartdate, sum(abs(value)) as dailytotal_ml
+	SELECT subject_id, hadm_id, icustay_id, cast(charttime as date) chartdate, sum(abs(amount)) as dailytotal_ml
 	FROM mimiciii.inputevents_cv 
 	WHERE itemid in (
 	'30018'--	.9% Normal Saline
@@ -117,5 +117,7 @@ CREATE MATERIALIZED VIEW fluid_cv_dailytotal AS
 	,'45073'--	IV fluid bolus
 	,'46207'--	OR LR
 	,'41380'--	nsbolus
-		) 
+) 
+group by chartdate, subject_id, icustay_id, hadm_id
+order by icustay_id, chartdate
 

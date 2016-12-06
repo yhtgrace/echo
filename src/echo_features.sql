@@ -10,6 +10,14 @@ DROP MATERIALIZED VIEW IF EXISTS echo_features CASCADE;
 
 CREATE MATERIALIZED VIEW echo_features AS
 
+WITH fluids AS (
+    SELECT icustay_id, chartdate
+        ,avg(daily_input_ml) as daily_input_ml
+        ,avg(daily_output_ml) as daily_output_ml
+        ,avg(daily_balance_ml) as daily_balance_ml
+    FROM fluid_dailybalance 
+    GROUP BY icustay_id, chartdate
+)
 SELECT ef.row_id, ef.icustay_id, ef.hadm_id, ef.subject_id 
 
     -- demographics
@@ -86,6 +94,7 @@ SELECT ef.row_id, ef.icustay_id, ef.hadm_id, ef.subject_id
 
     -- echo annotations
     ,ea.first_careunit AS ea_first_careunit
+    ,ea.age AS ea_age
     ,ea.age_of_death AS ea_age_of_death
     ,ea.days_after_discharge_death AS ea_days_after_discharge_death
     ,ea.status AS ea_status
@@ -130,6 +139,20 @@ SELECT ef.row_id, ef.icustay_id, ef.hadm_id, ef.subject_id
     ,vf.noninv_vent
     ,vf.mech_vent
 
+    -- fluid features
+    ,fd1.daily_input_ml AS fluid_daily_input_ml_1
+    ,fd1.daily_output_ml AS fluid_daily_output_ml_1
+    ,fd1.daily_balance_ml AS fluid_daily_balance_ml_1
+    ,fd1.chartdate AS fluid_chartdate_1
+    ,fd2.daily_input_ml AS fluid_daily_input_ml_2
+    ,fd2.daily_output_ml AS fluid_daily_output_ml_2
+    ,fd2.daily_balance_ml AS fluid_daily_balance_ml_2
+    ,fd2.chartdate AS fluid_chartdate_2
+    ,fd3.daily_input_ml AS fluid_daily_input_ml_3
+    ,fd3.daily_output_ml AS fluid_daily_output_ml_3
+    ,fd3.daily_balance_ml AS fluid_daily_balance_ml_3
+    ,fd3.chartdate AS fluid_chartdate_3
+
 FROM echo_filter_vars ef
 INNER JOIN icustays ic
     ON ef.icustay_id = ic.icustay_id
@@ -148,4 +171,14 @@ LEFT JOIN elixhauser_ahrq ex
 LEFT JOIN apsiii ap
     ON ef.icustay_id = ap.icustay_id
 LEFT JOIN echo_annotations_unique ea
-    ON ef.icustay_id = ea.icustay_id AND ef.charttime = ea.new_time
+    ON ef.icustay_id = ea.icustay_id AND 
+    ef.charttime IS NOT DISTINCT FROM ea.new_time
+LEFT JOIN fluids fd1
+    ON ef.icustay_id = fd1.icustay_id AND 
+    (CAST(ef.charttime AS DATE)) IS NOT DISTINCT FROM fd1.chartdate 
+LEFT JOIN fluids fd2
+    ON ef.icustay_id = fd2.icustay_id AND 
+    (CAST(ef.charttime AS DATE) + interval '1 day') IS NOT DISTINCT FROM fd2.chartdate 
+LEFT JOIN fluids fd3
+    ON ef.icustay_id = fd3.icustay_id AND 
+    (CAST(ef.charttime AS DATE) + interval '2 day') IS NOT DISTINCT FROM fd3.chartdate 

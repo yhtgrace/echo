@@ -1,6 +1,7 @@
 # notebook checkpoints
 *ipynb_checkpoints
 .DS_Store
+clean.sh
 
 #vim temp files
 *.swp

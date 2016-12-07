@@ -110,21 +110,21 @@ SELECT ef.row_id, ef.icustay_id, ef.hadm_id, ef.subject_id
     ,ea.rv_wall AS ea_rv_wall
 
     -- labs
-    ,ls.lab_albumin_min, ls.lab_albumin_max
-    ,ls.lab_bicarbonate_min, ls.lab_bicarbonate_max
-    ,ls.lab_ckmb_min, ls.lab_ckmb_max
-    ,ls.lab_creatinine_min, ls.lab_creatinine_max
-    ,ls.lab_crp_min, ls.lab_crp_max
-    ,ls.lab_egfr_min, ls.lab_egfr_max
-    ,ls.lab_hematocrit_min, ls.lab_hematocrit_max
-    ,ls.lab_inr_min, ls.lab_inr_max
-    ,ls.lab_lactate_min, ls.lab_lactate_max
-    ,ls.lab_platelet_min, ls.lab_platelet_max
-    ,ls.lab_ntprobnp_min, ls.lab_ntprobnp_max
-    ,ls.lab_ph_min, ls.lab_ph_max
-    ,ls.lab_tropi_min, ls.lab_tropi_max
-    ,ls.lab_tropt_min, ls.lab_tropt_max
-    ,ls.lab_wbc_min, ls.lab_wbc_max
+    ,ls.lab_albumin
+    ,ls.lab_bicarbonate
+    ,ls.lab_ckmb
+    ,ls.lab_creatinine
+    ,ls.lab_crp
+    ,ls.lab_egfr
+    ,ls.lab_hematocrit
+    ,ls.lab_inr
+    ,ls.lab_lactate
+    ,ls.lab_platelet
+    ,ls.lab_ntprobnp
+    ,ls.lab_ph
+    ,ls.lab_tropi
+    ,ls.lab_tropt
+    ,ls.lab_wbc
 
     -- filters
     ,ef.ps_vaso -- if patient was on vasopressor during the icustay
@@ -141,18 +141,15 @@ SELECT ef.row_id, ef.icustay_id, ef.hadm_id, ef.subject_id
     ,vf.mech_vent
 
     -- fluid features
-    ,fd1.daily_input_ml AS fluid_daily_input_ml_1
-    ,fd1.daily_output_ml AS fluid_daily_output_ml_1
-    ,fd1.daily_balance_ml AS fluid_daily_balance_ml_1
-    ,fd1.chartdate AS fluid_chartdate_1
-    ,fd2.daily_input_ml AS fluid_daily_input_ml_2
-    ,fd2.daily_output_ml AS fluid_daily_output_ml_2
-    ,fd2.daily_balance_ml AS fluid_daily_balance_ml_2
-    ,fd2.chartdate AS fluid_chartdate_2
-    ,fd3.daily_input_ml AS fluid_daily_input_ml_3
-    ,fd3.daily_output_ml AS fluid_daily_output_ml_3
-    ,fd3.daily_balance_ml AS fluid_daily_balance_ml_3
-    ,fd3.chartdate AS fluid_chartdate_3
+    ,eday123.day1_input_ml as fl_day1_input_ml
+    ,eday123.day1_output_ml as fl_day1_output_ml
+    ,eday123.day1_balance_ml as fl_day1_balance_ml
+    ,eday123.day2_input_ml as fl_day2_input_ml
+    ,eday123.day2_output_ml as fl_day2_output_ml
+    ,eday123.day2_balance_ml as fl_day2_balance_ml
+    ,eday123.day3_input_ml as fl_day3_input_ml
+    ,eday123.day3_output_ml as fl_day3_output_ml
+    ,eday123.day3_balance_ml as fl_day3_balance_ml
 
 FROM echo_filter_vars ef
 INNER JOIN icustays ic
@@ -163,9 +160,9 @@ INNER JOIN admissions am
     ON ef.hadm_id = am.hadm_id
 INNER JOIN echodata ed
     ON ef.row_id = ed.row_id
-INNER JOIN echo_features_labs ls
+LEFT JOIN echo_features_labs ls
     ON ef.row_id = ls.row_id
-INNER JOIN ventfeatures vf
+LEFT JOIN ventfeatures vf
     ON ef.row_id = vf.row_id
 LEFT JOIN elixhauser_ahrq ex
     ON ef.hadm_id = ex.hadm_id
@@ -174,12 +171,5 @@ LEFT JOIN apsiii ap
 LEFT JOIN echo_annotations_unique ea
     ON ef.icustay_id = ea.icustay_id AND 
     ef.charttime IS NOT DISTINCT FROM ea.new_time
-LEFT JOIN fluids fd1
-    ON ef.icustay_id = fd1.icustay_id AND 
-    (CAST(ef.charttime AS DATE)) IS NOT DISTINCT FROM fd1.chartdate 
-LEFT JOIN fluids fd2
-    ON ef.icustay_id = fd2.icustay_id AND 
-    (CAST(ef.charttime AS DATE) + interval '1 day') IS NOT DISTINCT FROM fd2.chartdate 
-LEFT JOIN fluids fd3
-    ON ef.icustay_id = fd3.icustay_id AND 
-    (CAST(ef.charttime AS DATE) + interval '2 day') IS NOT DISTINCT FROM fd3.chartdate 
+LEFT JOIN echo_first3day_fluid eday123
+    ON ef.row_id = eday123.row_id

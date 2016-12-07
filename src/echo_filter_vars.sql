@@ -23,7 +23,8 @@ WITH
         ON di.icd9_code = dx.icd9_code
     INNER JOIN echo_icustay ei
         ON di.hadm_id = ei.hadm_id -- join on hadm_id 
-    WHERE dx.exclude = 1
+    WHERE dx.exclude = 1 
+        AND di.icd9_code <> '4280' -- congestive heart failure
 )
 , echo_chronic_dialysis AS (
     SELECT DISTINCT cd.hadm_id
@@ -66,7 +67,6 @@ WITH
         ON ic.subject_id = pt.subject_id
 )
 -- add filters
--- TODO: implement filter to remove echos if more than 3 echos in 1 icustay
 SELECT *
     , ((ee.intime_to_echo > INTERVAL '-8 hours') AND 
        (ee.intime_to_echo < INTERVAL '48 hours')) AS time_filter

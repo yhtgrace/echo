@@ -1,11 +1,3 @@
--- for a clean copy of echo_filtered, run in order
--- echo_icustay (25512)
--- d_diagnoses_xc_annot (392)
--- d_prescriptions_vaso (49)
--- echo_outpatient (4385)
--- echo_filter_vars (25512)
--- echo_filtered (1932) 
-
 DROP MATERIALIZED VIEW IF EXISTS echo_filtered CASCADE;
 
 CREATE MATERIALIZED VIEW echo_filtered AS 
@@ -13,8 +5,9 @@ CREATE MATERIALIZED VIEW echo_filtered AS
 WITH 
   passes_filters AS (
     SELECT *
-        , DENSE_RANK() OVER (PARTITION BY ef.subject_id ORDER BY ef.charttime) AS echo_seq 
-    FROM echo_filter_vars ef
+        , DENSE_RANK() OVER (PARTITION BY ef.subject_id ORDER BY ef.admittime DESC) 
+          AS most_recent_hadm
+    FROM echo_features ef
     WHERE (
             ef.ps_vaso = True 
         AND ef.diag_xc = False
@@ -22,7 +15,16 @@ WITH
         AND ef.age_filter = True
     ) 
 )
-SELECT *
-FROM passes_filters pf
--- subject_id can only be included once, use the earliest echo
-WHERE pf.echo_seq = 1
+, most_recent_hadm AS (
+    SELECT * 
+    FROM passes_filters
+    WHERE most_recent_hadm = 1
+)
+, first_echo AS (
+    SELECT * 
+        , DENSE_RANK() OVER (PARTITION BY mh.subject_id ORDER BY mh.ed_charttime) 
+          AS first_echo
+    FROM most_recent_hadm mh
+)
+SELECT * FROM first_echo
+WHERE first_echo = 1

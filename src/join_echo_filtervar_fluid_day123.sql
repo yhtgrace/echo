@@ -14,7 +14,7 @@ select em.row_id, eff.day_wrt_echo, eff.daily_input_ml, eff.daily_output_ml, eff
 from echo_icustay em
 left join echo_features_fluid eff
 on em.row_id = eff.row_id
-where day_wrt_echo = 1
+where day_wrt_echo = 0
 
 ), day2 AS (
 
@@ -22,7 +22,7 @@ select em.row_id, eff.day_wrt_echo, eff.daily_input_ml, eff.daily_output_ml, eff
 from echo_icustay em
 left join echo_features_fluid eff
 on em.row_id = eff.row_id
-where day_wrt_echo = 2
+where day_wrt_echo = 1
 
 ), day3 AS (
 
@@ -30,7 +30,7 @@ select em.row_id, eff.day_wrt_echo, eff.daily_input_ml, eff.daily_output_ml, eff
 from echo_icustay em
 left join echo_features_fluid eff
 on em.row_id = eff.row_id
-where day_wrt_echo = 3
+where day_wrt_echo = 2
 )
 
 ,composite as (

@@ -6,6 +6,7 @@
 -- echo_outpatient (4385)
 -- echo_filter_vars (25512)
 -- echo_features_labs (25512) 
+-- echo_features_fluid (25512)
 
 DROP MATERIALIZED VIEW IF EXISTS echo_features_mx CASCADE;
 
@@ -86,6 +87,7 @@ SELECT ef.row_id, ef.icustay_id, ef.hadm_id, ef.subject_id
     ,ed.contrast AS ed_contrast
 
     -- echo annotations
+    ,ea.age AS ea_age
     ,ea.first_careunit AS ea_first_careunit
     ,ea.age_of_death AS ea_age_of_death
     ,ea.days_after_discharge_death AS ea_days_after_discharge_death

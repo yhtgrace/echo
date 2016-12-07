@@ -63,7 +63,10 @@ src/Makefile src/create_echo_annotations
 src/Makefile src/echo_features
 ```
 
-
+#### Get the final filtered table
+```
+src/Makefile src/echo_filtered
+```
 
 
 

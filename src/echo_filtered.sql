@@ -13,7 +13,7 @@ WITH
         AND ef.diag_xc = False
         AND ef.time_filter = True
         AND ef.age_filter = True
-        AND ef.chronic_dial_flg = False
+        AND ef.chronic_dialysis_flg = False
     ) 
 )
 , most_recent_hadm AS (

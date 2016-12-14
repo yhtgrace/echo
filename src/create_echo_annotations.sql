@@ -1,6 +1,6 @@
 ﻿-- Table: mimiciii.echo_annotations
 
-DROP TABLE IF EXISTS mimiciii.echo_annotations_unique;
+DROP TABLE IF EXISTS mimiciii.echo_annotations_unique CASCADE;
 
 CREATE TABLE mimiciii.echo_annotations_unique
 (
@@ -38,4 +38,4 @@ WITH (
 );
 --ALTER TABLE mimiciii.echo_annnotations_unique
 --  OWNER TO postgres;
-COPY mimiciii.echo_annotations_unique FROM '/resources/echo_ann_unique.csv' CSV HEADER;
+COPY mimiciii.echo_annotations_unique FROM '/Users/yhtgrace/Documents/projects/echo/teemo/resources/echo_ann_unique.csv' CSV HEADER;

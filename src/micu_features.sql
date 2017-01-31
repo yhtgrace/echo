@@ -59,6 +59,43 @@ WITH micu_icustays AS (
         ON ic.subject_id = pt.subject_id
 )
 
+-- height in cm
+, height as(
+    select subject_id, hadm_id, icustay_id
+        , avg(  
+            case 
+                when itemid in (920, 1394, 4187, 3486, 226707)
+                    THEN valuenum*2.54 --convert to cm
+                else valuenum -- already in cm
+            end
+        ) as valuenum
+    from chartevents
+    where itemid in (920, 1394, 4187, 3486, 3485, 4188, 226707)
+    AND valuenum IS NOT NULL
+    AND valuenum > 0
+    AND valuenum < 500
+    GROUP BY subject_id, hadm_id, icustay_id
+)
+
+-- weight in kg
+, weight as(
+    select subject_id, hadm_id, icustay_id
+        , avg(
+            case
+                when itemid in (3581, 226512)
+                   then valuenum*0.45359237
+                when itemid = 3582
+                   then valuenum*0.0283495231
+                else valuenum
+            end
+        ) as valuenum
+    from chartevents
+    where itemid in (762, 763, 3723, 3580, 3581, 3582, 226512)
+    AND valuenum IS NOT NULL
+    AND valuenum > 0
+    GROUP BY subject_id, hadm_id, icustay_id
+)
+
 -- collate features
 
 SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
@@ -66,9 +103,9 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
     -- demographics
     ,age(ic.intime,pt.dob)-- age at admission to ICU
     ,pt.gender -- gender
-    -- height
-    -- weight
-    -- bmi
+    ,ht.valuenum as height -- height (cm)
+    ,wt.valuenum as weight -- weight (kg)
+    ,wt.valuenum/power(ht.valuenum/100, 2) as bmi -- bmi
     ,am.ethnicity -- race
     ,am.insurance -- insurance
 
@@ -149,6 +186,38 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
 
     -- fluid features
 
+    -- echo features
+    -- echo info (echodata)
+    ,ef.ed_chartdate
+    ,ef.ed_charttime
+    ,ef.ed_quality
+    ,ef.ed_indication
+    ,ef.ed_bsa
+    ,ef.ed_bp
+    ,ef.ed_bpsys
+    ,ef.ed_bpdias 
+    ,ef.ed_hr
+    ,ef.ed_test
+    ,ef.ed_doppler
+    ,ef.ed_contrast
+
+    -- echo annotations
+    ,ef.ea_first_careunit
+    ,ef.ea_age
+    ,ef.ea_age_of_death
+    ,ef.ea_days_after_discharge_death
+    ,ef.ea_status
+    ,ef.ea_tv_pulm_htn
+    ,ef.ea_tv_tr
+    ,ef.ea_lv_cavity
+    ,ef.ea_lv_diastolic
+    ,ef.ea_lv_systolic
+    ,ef.ea_lv_wall
+    ,ef.ea_rv_cavity
+    ,ef.ea_rv_diastolic_fluid
+    ,ef.ea_rv_systolic
+    ,ef.ea_rv_wall
+
 FROM micu_icustays ic
 INNER JOIN patients pt
     ON ic.subject_id = pt.subject_id
@@ -162,3 +231,12 @@ LEFT JOIN apsiii ap
     ON ic.icustay_id = ap.icustay_id
 LEFT JOIN labsfirstday_ ls
     ON ic.icustay_id = ls.icustay_id 
+LEFT JOIN height ht
+    ON ic.icustay_id = ht.icustay_id
+LEFT JOIN weight wt
+    ON ic.icustay_id = wt.icustay_id
+LEFT JOIN echo_features ef
+    ON ic.icustay_id = ef.icustay_id
+
+
+

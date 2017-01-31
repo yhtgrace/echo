@@ -186,6 +186,38 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
 
     -- fluid features
 
+    -- echo features
+    -- echo info (echodata)
+    ,ef.ed_chartdate
+    ,ef.ed_charttime
+    ,ef.ed_quality
+    ,ef.ed_indication
+    ,ef.ed_bsa
+    ,ef.ed_bp
+    ,ef.ed_bpsys
+    ,ef.ed_bpdias 
+    ,ef.ed_hr
+    ,ef.ed_test
+    ,ef.ed_doppler
+    ,ef.ed_contrast
+
+    -- echo annotations
+    ,ef.ea_first_careunit
+    ,ef.ea_age
+    ,ef.ea_age_of_death
+    ,ef.ea_days_after_discharge_death
+    ,ef.ea_status
+    ,ef.ea_tv_pulm_htn
+    ,ef.ea_tv_tr
+    ,ef.ea_lv_cavity
+    ,ef.ea_lv_diastolic
+    ,ef.ea_lv_systolic
+    ,ef.ea_lv_wall
+    ,ef.ea_rv_cavity
+    ,ef.ea_rv_diastolic_fluid
+    ,ef.ea_rv_systolic
+    ,ef.ea_rv_wall
+
 FROM micu_icustays ic
 INNER JOIN patients pt
     ON ic.subject_id = pt.subject_id
@@ -203,6 +235,8 @@ LEFT JOIN height ht
     ON ic.icustay_id = ht.icustay_id
 LEFT JOIN weight wt
     ON ic.icustay_id = wt.icustay_id
+LEFT JOIN echo_features ef
+    ON ic.icustay_id = ef.icustay_id
 
 
 

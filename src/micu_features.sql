@@ -2,8 +2,6 @@ DROP MATERIALIZED VIEW IF EXISTS micu_features CASCADE;
 
 CREATE MATERIALIZED VIEW micu_features AS
 
--- only look at icustays with micu as first or last careunit
-
 WITH micu_icustays AS (
     SELECT * 
     FROM icustays 
@@ -38,12 +36,21 @@ WITH micu_icustays AS (
     INNER JOIN micu_icustays ic
         ON ic.icustay_id = ei.icustay_id
 )
+, filter_angus AS ( 
+    SELECT DISTINCT ag.hadm_id
+        , 1 AS angus_sepsis_flg
+    FROM angus_sepsis as ag
+    INNER JOIN micu_icustays ic
+        ON ag.hadm_id = ic.hadm_id
+)
 , filters AS (
     SELECT ic.icustay_id
         -- whether or not patient was on vasopressor during icustay
         ,fv.ps_vaso IS NOT NULL as ps_vaso
         -- whether or not patient was on chronic dialysis during hadm
         ,fcd.chronic_dial_flg IS NOT NULL as chronic_dialysis
+        -- whether or not patient has sepsis according to the angus definition
+        ,fa.angus_sepsis_flg IS NOT NULL as angus_sepsis
         -- age on admission to the icu
         ,age(ic.intime, pt.dob) > INTERVAL '18 years' AS adult
         -- whether or not patient has an echo
@@ -53,11 +60,15 @@ WITH micu_icustays AS (
         ON ic.icustay_id = fv.icustay_id
     LEFT JOIN filter_chronic_dialysis fcd
         ON ic.hadm_id = fcd.hadm_id
+    LEFT JOIN filter_angus fa
+        ON ic.hadm_id = fa.hadm_id
     LEFT JOIN filter_echo fe
         ON ic.icustay_id = fe.icustay_id 
     INNER JOIN patients pt
         ON ic.subject_id = pt.subject_id
 )
+
+-- calculate other features
 
 -- height in cm
 , height as(
@@ -155,7 +166,7 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
     -- outcomes
     ,pt.dod -- date of death
 
-    -- labs
+    -- labs (first day)
     ,ls.lab_albumin
     ,ls.lab_bicarbonate
     ,ls.lab_ckmb
@@ -176,7 +187,9 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
     -- true if patient was on vasopressor during icustay
     ,fs.ps_vaso AS filter_vaso 
     -- true if patient was on chronic dialysis during hospital admission
-    ,fs.chronic_dialysis AS filter_chronic_dialysis 
+    ,fs.chronic_dialysis AS filter_chronic_dialysis
+    -- true if patient has sepsis according to the angus definition during hospital admission
+    ,fs.angus_sepsis AS filter_angus_sepsis
     -- true if patient was > 18 years at time of icustay admission
     ,fs.adult AS filter_adult
     -- true if patient had an echo during that icustay

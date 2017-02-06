@@ -1,20 +1,14 @@
-DROP MATERIALIZED VIEW IF EXISTS micu_features CASCADE;
+DROP MATERIALIZED VIEW IF EXISTS icu_features CASCADE;
 
-CREATE MATERIALIZED VIEW micu_features AS
-
-WITH micu_icustays AS (
-    SELECT * 
-    FROM icustays 
-    WHERE (first_careunit = 'MICU') OR (last_careunit = 'MICU')
-)
+CREATE MATERIALIZED VIEW icu_features AS
 
 -- calculate flags for filtering
 
-, filter_vaso AS (
+WITH filter_vaso AS (
     SELECT DISTINCT ps.icustay_id
         , 1 AS ps_vaso
     FROM prescriptions ps
-    INNER JOIN micu_icustays ic
+    INNER JOIN icustays ic
         ON ic.icustay_id = ps.icustay_id 
     INNER JOIN d_prescriptions_vaso dpv
         ON ( ps.drug                 IS NOT DISTINCT FROM dpv.drug 
@@ -26,23 +20,24 @@ WITH micu_icustays AS (
     SELECT DISTINCT cd.hadm_id
         , 1 AS chronic_dial_flg
     FROM chronic_dialysis cd
-    INNER JOIN micu_icustays ic
+    INNER JOIN icustays ic
         ON cd.hadm_id = ic.hadm_id
 )
 , filter_echo AS (
     SELECT DISTINCT ei.icustay_id
         , 1 AS echo_flg
     FROM echo_icustay ei
-    INNER JOIN micu_icustays ic
+    INNER JOIN icustays ic
         ON ic.icustay_id = ei.icustay_id
 )
 , filter_angus AS ( 
     SELECT DISTINCT ag.hadm_id
         , 1 AS angus_sepsis_flg
     FROM angus_sepsis as ag
-    INNER JOIN micu_icustays ic
+    INNER JOIN icustays ic
         ON ag.hadm_id = ic.hadm_id
 )
+-- TODO: hard cardiogenic filters
 , filters AS (
     SELECT ic.icustay_id
         -- whether or not patient was on vasopressor during icustay
@@ -55,7 +50,7 @@ WITH micu_icustays AS (
         ,age(ic.intime, pt.dob) > INTERVAL '18 years' AS adult
         -- whether or not patient has an echo
         ,fe.echo_flg IS NOT NULL as echo
-    FROM micu_icustays ic
+    FROM icustays ic
     LEFT JOIN filter_vaso fv
         ON ic.icustay_id = fv.icustay_id
     LEFT JOIN filter_chronic_dialysis fcd
@@ -68,7 +63,7 @@ WITH micu_icustays AS (
         ON ic.subject_id = pt.subject_id
 )
 
--- calculate other features
+-- calculate new features
 
 -- height in cm
 , height as(
@@ -165,8 +160,14 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
 
     -- outcomes
     ,pt.dod -- date of death
+    
+    -- secondary outcomes
+    ,so.creatinine_last
+    ,so.creatinine_max
+    ,so.lactate_last
+    ,so.lactate_max
 
-    -- labs (first day)
+    -- labs on first day of icustay
     ,ls.lab_albumin
     ,ls.lab_bicarbonate
     ,ls.lab_ckmb
@@ -231,7 +232,7 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
     ,ef.ea_rv_systolic
     ,ef.ea_rv_wall
 
-FROM micu_icustays ic
+FROM icustays ic
 INNER JOIN patients pt
     ON ic.subject_id = pt.subject_id
 INNER JOIN admissions am
@@ -250,6 +251,6 @@ LEFT JOIN weight wt
     ON ic.icustay_id = wt.icustay_id
 LEFT JOIN echo_features ef
     ON ic.icustay_id = ef.icustay_id
-
-
+LEFT JOIN secondary_outcomes so
+    ON ic.icustay_id = so.icustay_id
 

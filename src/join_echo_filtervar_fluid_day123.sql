@@ -15,6 +15,7 @@ from echo_icustay em
 left join echo_features_fluid eff
 on em.row_id = eff.row_id
 where day_wrt_echo = 0
+--where day_wrt_icuadmit = 0
 
 ), day2 AS (
 
@@ -23,6 +24,7 @@ from echo_icustay em
 left join echo_features_fluid eff
 on em.row_id = eff.row_id
 where day_wrt_echo = 1
+--where day_wrt_icuadmit = 1
 
 ), day3 AS (
 
@@ -31,6 +33,7 @@ from echo_icustay em
 left join echo_features_fluid eff
 on em.row_id = eff.row_id
 where day_wrt_echo = 2
+--where day_wrt_icuadmit = 2
 )
 
 ,composite as (

@@ -37,7 +37,7 @@ WITH filter_vaso AS (
         -- whether or not patient was on chronic dialysis during hadm
         ,fcd.chronic_dial_flg IS NOT NULL as chronic_dialysis
         -- whether or not patient has sepsis according to the angus definition
-        ,fa.angus_sepsis_flg IS NOT NULL as angus_sepsis
+        ,fa.angus_sepsis_flg as angus_sepsis
         -- whether or not patient was flagged as having a hard cardiogenic filter
         ,cf.any_flg AS hard_cardiogenic
         -- age on admission to the icu

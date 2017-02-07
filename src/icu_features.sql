@@ -25,7 +25,7 @@ WITH filter_vaso AS (
 )
 , filter_angus AS ( 
     SELECT DISTINCT ag.hadm_id
-        , 1 AS angus_sepsis_flg
+        , ag.angus AS angus_sepsis_flg
     FROM angus_sepsis as ag
     INNER JOIN icustays ic
         ON ag.hadm_id = ic.hadm_id

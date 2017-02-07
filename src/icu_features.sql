@@ -212,6 +212,8 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
     ,fs.adult AS filter_adult
     -- true if patient had an echo during that icustay
     ,ed.charttime IS NOT NULL AS filter_echo
+    -- true if first careunit or last careunit was micu
+    ,(ic.first_careunit = 'MICU') OR (ic.last_careunit = 'MICU') AS filter_micu
 
     -- ventilation features
 

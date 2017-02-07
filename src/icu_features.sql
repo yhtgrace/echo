@@ -216,10 +216,19 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
     -- ventilation features
 
     -- fluid features
+    ,fb.day1_input_ml as fb_day1_input_ml
+    ,fb.day1_output_ml as fb_day1_output_ml
+    ,fb.day1_balance_ml as fb_day1_balance_ml
+    ,fb.day2_input_ml as fb_day2_input_ml
+    ,fb.day2_output_ml as fb_day2_output_ml
+    ,fb.day2_balance_ml as fb_day2_balance_ml
+    ,fb.day3_input_ml as fb_day3_input_ml
+    ,fb.day3_output_ml as fb_day3_output_ml
+    ,fb.day3_balance_ml as fb_day3_balance_ml
 
     -- echo features
-    -- the problem with adding echo data here is that there might be multiple
-    -- echos per icustay. one way to get around that is to only use the first echo
+    -- first echo of each icustay
+    -- if multiple echos at first time-point, sort by quality and take best
 
     -- echo info (echodata)
     ,ed.chartdate as ed_chartdate
@@ -276,3 +285,5 @@ LEFT JOIN icustay_first_ed ed
 LEFT JOIN echo_annotations_unique ea
     ON ic.icustay_id = ea.icustay_id AND
     ed.charttime IS NOT DISTINCT FROM ea.new_time
+INNER JOIN fluid_balance_day123 fb
+    ON ic.icustay_id = fb.icustay_id

@@ -37,6 +37,7 @@ WITH patient_fluid AS
 		and cancelreason = 0 -- some orders are cancelled
 		and statusdescription != 'Rewritten'  -- not sure if this should be a filter.
 		and ordercategoryname not like '%Pre Admission%' -- Pre Admission fluid can be very high and cover uncertain amount of time.  
+		and icustay_id is not null
 		--order by subject_id, starttime
 )
 , dates AS (
@@ -50,13 +51,17 @@ WITH patient_fluid AS
 	   --ORDER  BY row_id, starttime
 )
 , dailysplit AS (
-	SELECT *, (endtime-starttime) as duration, cast(starttime as date) chartdate,
+	SELECT fl.*, (fl.endtime-fl.starttime) as duration, age(fl.starttime, ic.intime) as elapsed, 
+		extract(day from (fl.starttime-ic.intime)) as day_since_admission,
 		CASE WHEN rate isnull then amount ELSE rate*extract( epoch from (endtime-starttime)/3600) END as amount_ml
-		FROM dates
+		FROM dates as fl
+		join icustays as ic
+		on fl.icustay_id = ic.icustay_id
 		order by subject_id, icustay_id, starttime
 )
 
-select subject_id, hadm_id, icustay_id, chartdate, sum(amount_ml) as dailytotal_ml
+--select subject_id, hadm_id, icustay_id, day_since_admission, sum(amount_ml) as dailytotal_ml
+select icustay_id, day_since_admission, sum(amount_ml) as dailytotal_ml
 from dailysplit
-group by chartdate, subject_id, icustay_id, hadm_id
-order by icustay_id, chartdate
+group by day_since_admission, subject_id, icustay_id
+order by icustay_id, day_since_admission

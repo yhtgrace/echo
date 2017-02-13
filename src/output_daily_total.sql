@@ -4,9 +4,19 @@ DROP MATERIALIZED VIEW IF EXISTS output_dailytotal CASCADE;
 
 CREATE MATERIALIZED VIEW output_dailytotal AS 
 
-select subject_id, cast(charttime as date) chartdate, sum(abs(value)) as dailytotal_ml
-from outputevents
+with fluid_icustay_join as (
+select s.icustay_id, s.intime, f.charttime, age(f.charttime, s.intime) as elapsed, value as amount,
+  extract(day from (f.charttime-s.intime)) as day_since_admission
+from mimiciii.outputevents as f
+join mimiciii.icustays as s
+on f.icustay_id = s.icustay_id
 where itemid != '226633' -- Pre-Admission
 and itemid != '40060' --Pre-Admission Output Pre-Admission Output
 and value < 100000
-group by chartdate, subject_id
+and s.icustay_id is not null
+)
+
+--select subject_id, icustay_id, day_since_admission, sum(abs(amount)) as dailytotal_ml
+select icustay_id, day_since_admission, sum(abs(amount)) as dailytotal_ml
+from fluid_icustay_join
+group by day_since_admission, icustay_id

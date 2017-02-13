@@ -4,10 +4,13 @@ DROP MATERIALIZED VIEW IF EXISTS fluid_cv_dailytotal CASCADE;
 
 CREATE MATERIALIZED VIEW fluid_cv_dailytotal AS 
 
-
-	SELECT subject_id, icustay_id, cast(charttime as date) chartdate, sum(abs(amount)) as dailytotal_ml
-	FROM mimiciii.inputevents_cv 
-	WHERE itemid in (
+with fluid_icustay_join as (
+select s.subject_id, s.icustay_id, s.intime, f.charttime, age(f.charttime, s.intime) as elapsed, amount,
+  extract(day from (f.charttime-s.intime)) as day_since_admission
+from mimiciii.inputevents_cv as f
+join mimiciii.icustays as s
+on f.icustay_id = s.icustay_id
+WHERE itemid in (
 	'30018'--	.9% Normal Saline
 	,'30021'--	Lactated Ringers
 	,'30015'--	D5/.45NS
@@ -117,9 +120,13 @@ CREATE MATERIALIZED VIEW fluid_cv_dailytotal AS
 	,'45073'--	IV fluid bolus
 	,'46207'--	OR LR
 	,'41380'--	nsbolus
-) 
-and amount > 0
-and amount < 100000
-group by chartdate, subject_id, icustay_id --, hadm_id
-order by icustay_id, chartdate
+)
+)
+
+--SELECT subject_id, icustay_id, day_since_admission, sum(abs(amount)) as dailytotal_ml
+SELECT icustay_id, day_since_admission, sum(abs(amount)) as dailytotal_ml
+FROM fluid_icustay_join
+where amount is not null and amount > 0 and amount < 100000 and icustay_id is not null
+group by day_since_admission, icustay_id, subject_id --, hadm_id
+order by icustay_id, day_since_admission
 

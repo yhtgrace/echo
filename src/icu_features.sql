@@ -213,9 +213,11 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
     -- true if patient had an echo during that icustay
     ,ed.charttime IS NOT NULL AS filter_echo
     -- true if first careunit or last careunit was micu
-    ,(ic.first_careunit = 'MICU') OR (ic.last_careunit = 'MICU') AS filter_micu
+    -- ,(ic.first_careunit = 'MICU') OR (ic.last_careunit = 'MICU') AS filter_micu
 
     -- service type
+    ,ic.first_careunit as ic_first_careunit
+    ,ic.last_careunit as ic_last_careunit
     ,st.micu AS st_micu
     ,st.sicu AS st_sicu
     ,st.nsicu AS st_nsicu
@@ -225,7 +227,7 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
     -- fluid features
     ,fb.day1_input_ml as fb_day1_input_ml
     ,fb.day1_output_ml as fb_day1_output_ml
-    ,fb.day1_balance_ml as fb_day1_balance_ml
+    ,fb.day1_balance_ml as fb_day1_balance_ml 
     ,fb.day2_input_ml as fb_day2_input_ml
     ,fb.day2_output_ml as fb_day2_output_ml
     ,fb.day2_balance_ml as fb_day2_balance_ml
@@ -252,7 +254,6 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
     ,ed.contrast as ed_contrast
 
     -- echo annotations
-    ,ea.first_careunit as ea_first_careunit
     ,ea.age as ea_age
     ,ea.age_of_death as ea_age_of_death
     ,ea.days_after_discharge_death as ea_days_after_discharge_death

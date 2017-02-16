@@ -44,7 +44,29 @@ WITH ce_CVO2 AS (
         '225430' -- Cardiac Cath                    | metavision | 4-procedures 
     )
 )
--- TODO: icd9 procedures
+, pi_cardiac_procedures AS (
+    SELECT DISTINCT pi.hadm_id
+        , 1 AS picd9_flg
+    FROM procedures_icd pi
+    WHERE pi.icd9_code IN (
+         '66'   -- Percutaneous transluminal coronary angioplasty...
+        ,'3691' -- Repair of aneurysm of coronary vessel
+        ,'3603' -- Open chest coronary artery angioplasty
+        ,'3604' -- Intracoronary artery thrombolytic infusion
+        ,'3606' -- Insertion of non-drug-eluting coronary artery ...
+        ,'3607' -- Insertion of drug-eluting coronary artery sten...
+        ,'3609' -- Other removal of coronary artery obstruction
+        ,'3610' -- Aortocoronary bypass for heart revascularizati...
+        ,'3611' -- (Aorto)coronary bypass of one coronary artery
+        ,'3612' -- (Aorto)coronary bypass   of two coronary arteries
+        ,'3613' -- (Aorto)coronary bypass of three coronary arteries
+        ,'3614' -- (Aorto)coronary bypass of four or more coronar...
+        ,'3615' -- Single internal mammary-coronary artery bypass
+        ,'3616' -- Double internal mammary-coronary artery bypass
+        ,'3617' -- Abdominal-coronary artery bypass
+        ,'1755' -- Transluminal coronary atherectomy 
+    )
+)
 , ce_mech_support AS (
     SELECT DISTINCT ce.icustay_id
         , 1 AS mech_support_flg
@@ -103,22 +125,63 @@ WITH ce_CVO2 AS (
         ,226110  -- IABP placed in outside facility         | metavision
     )
 )
+, ps_dobutamine AS (
+    SELECT DISTINCT ps.icustay_id
+        ,1 AS ps_dobutamine_flg
+    FROM prescriptions ps
+    WHERE (concat(ps.drug, ps.drug_name_poe, ps.drug_name_generic) ~* '.*dobutamine.*')
+        -- DOBUTamine     |                 |                    | IV
+        -- DOBUTamine     |                 |                    | IV DRIP
+        -- DOBUTamine     |                 |                    | PB
+        -- Dobutamine     |                 |                    | IV DRIP
+        -- Dobutamine HCl | Dobutamine HCl  | Enoxaparin Sodium  | IV DRIP
+        -- Dobutamine HCl |                 |                    | IV
+        -- Dobutamine HCl |                 |                    | IV DRIP
+        -- Dobutamine HCl |                 |                    | PB
+        -- Dobutamine Hcl |                 |                    | IV DRIP
+        -- Dobutamine Hcl |                 |                    | PB
+    GROUP BY ps.icustay_id
+)
+, ps_milrinone AS (
+    SELECT DISTINCT ps.icustay_id
+        ,1 AS ps_milrinone_flg
+    FROM prescriptions ps
+    WHERE (concat(ps.drug, ps.drug_name_poe, ps.drug_name_generic) ~* '.*milrinone.*')
+        -- Milrinone         | Milrinone       | Milrinone Lactate  | IV
+        -- Milrinone         | Milrinone       | Milrinone Lactate  | IV BOLUS
+        -- Milrinone         | Milrinone       | Milrinone Lactate  | IV DRIP
+        -- Milrinone         |                 |                    | IV
+        -- Milrinone         |                 |                    | IV BOLUS
+        -- Milrinone         |                 |                    | IV DRIP
+        -- Milrinone         |                 |                    | PB
+        -- Milrinone Lactate |                 |                    | IV
+        -- Milrinone Lactate |                 |                    | IV DRIP
+    GROUP BY ps.icustay_id
+)
+
 SELECT ic.icustay_id
     ,ce_cv.min_cvO2 IS NOT NULL AS ce_cvO2 
     ,ce_mv.min_mvO2 IS NOT NULL AS ce_mvO2
     ,ce_ci.min_ci IS NOT NULL AS ce_ci
     ,ce_cc.cardiac_cath_flg IS NOT NULL AS ce_cardiac_cath_flg
     ,ce_ms.mech_support_flg IS NOT NULL AS ce_mech_support_flg
+    ,pi.picd9_flg IS NOT NULL AS pi_icd9_flg
+    ,ps_dobutamine.ps_dobutamine_flg IS NOT NULL AS ps_dobutamine_flg
+    ,ps_milrinone.ps_milrinone_flg IS NOT NULL AS ps_milrinone_flg
     --
     --  any_flg | count
     -- ---------+-------
-    --  f       | 56946
-    --  t       |  4586
+    --  f       | 51376
+    --  t       | 10156
     ,((ce_cv.min_cvO2 IS NOT NULL) OR
       (ce_mv.min_mvO2 IS NOT NULL) OR
       (ce_ci.min_ci IS NOT NULL) OR 
       (ce_cc.cardiac_cath_flg IS NOT NULL) OR
-      (ce_ms.mech_support_flg IS NOT NULL)) AS any_flg
+      (ce_ms.mech_support_flg IS NOT NULL) OR 
+      (pi.picd9_flg IS NOT NULL) OR
+      (ps_dobutamine.ps_dobutamine_flg IS NOT NULL) OR
+      (ps_milrinone.ps_milrinone_flg IS NOT NULL)
+     ) AS any_flg
 FROM icustays ic
 LEFT JOIN ce_CVO2 ce_cv
     ON ic.icustay_id = ce_cv.icustay_id
@@ -130,3 +193,9 @@ LEFT JOIN ce_cardiac_cath ce_cc
     ON ic.icustay_id = ce_cc.icustay_id
 LEFT JOIN ce_mech_support ce_ms
     ON ic.icustay_id = ce_ms.icustay_id
+LEFT JOIN pi_cardiac_procedures pi
+    ON ic.hadm_id = pi.hadm_id
+LEFT JOIN ps_dobutamine 
+    ON ic.icustay_id = ps_dobutamine.icustay_id
+LEFT JOIN ps_milrinone
+    ON ic.icustay_id = ps_milrinone.icustay_id

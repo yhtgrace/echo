@@ -215,6 +215,11 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
     -- true if first careunit or last careunit was micu
     ,(ic.first_careunit = 'MICU') OR (ic.last_careunit = 'MICU') AS filter_micu
 
+    -- service type
+    ,st.micu AS st_micu
+    ,st.sicu AS st_sicu
+    ,st.nsicu AS st_nsicu
+
     -- ventilation features
 
     -- fluid features
@@ -287,5 +292,7 @@ LEFT JOIN icustay_first_ed ed
 LEFT JOIN echo_annotations_unique ea
     ON ic.icustay_id = ea.icustay_id AND
     ed.charttime IS NOT DISTINCT FROM ea.new_time
+LEFT JOIN service_type_MICU_SICU_NSICU st
+    ON ic.icustay_id = st.icustay_id
 INNER JOIN fluid_balance_day123 fb
     ON ic.icustay_id = fb.icustay_id

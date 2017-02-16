@@ -6,6 +6,15 @@
 DROP MATERIALIZED VIEW IF EXISTS labsfirstday_ CASCADE;
 
 create materialized view labsfirstday_ as
+
+with labs_ as (
+    select ls.* 
+    from labs ls
+    INNER JOIN icustays ic
+        ON ic.icustay_id = ls.icustay_id
+    WHERE ls.charttime BETWEEN ic.intime and ic.intime + interval '24' hour 
+)
+
 select
   pvt.subject_id, pvt.hadm_id, pvt.icustay_id
       
@@ -26,6 +35,6 @@ select
     , avg(case when label = 'TROPT' then valuenum else null end) as LAB_TROPT
     , avg(case when label = 'WBC' then valuenum else null end) as LAB_WBC
 
-from labs pvt
+from labs_ pvt
 group by pvt.subject_id, pvt.hadm_id, pvt.icustay_id
 order by pvt.subject_id, pvt.hadm_id, pvt.icustay_id;

@@ -24,7 +24,8 @@ service_type_ as (
 select *,  
   CASE WHEN value in ('MICU', 'MSICU', 'MICU/SICU') then 1 else 0 END AS MICU,
   CASE WHEN value in ('SICU', 'MSICU', 'T-SICU', 'MICU/SICU') then 1 else 0 END AS SICU,
-  CASE WHEN value in ('NSICU') then 1 else 0 END AS NSICU
+  CASE WHEN value in ('NSICU') then 1 else 0 END AS NSICU,
+  CASE WHEN value in ('CSRU', 'CSICU', 'CCU', 'CVI/CSRU') then 1 else 0 END AS CARDIAC 
 from service_type
 ) 
 
@@ -33,5 +34,7 @@ select icustay_id
     ,CASE when sum(MICU) > 0 then 1 else 0 END AS MICU 
     ,CASE when sum(SICU) > 0 then 1 else 0 END AS SICU
     ,CASE WHEN sum(NSICU) > 0 then 1 else 0 END AS NSICU
+    ,CASE WHEN sum(CARDIAC) > 0 then 1 else 0 END AS CARDIAC
 from service_type_
+where icustay_id is not null
 group by icustay_id

@@ -2,64 +2,47 @@ DROP MATERIALIZED VIEW IF EXISTS secondary_outcomes CASCADE;
 
 CREATE MATERIALIZED VIEW secondary_outcomes AS 
 
-WITH lab_last as(
-    select distinct on (subject_id, hadm_id, icustay_id, label)
-        subject_id, hadm_id, icustay_id, label, valuenum
-    from (select subject_id, hadm_id, icustay_id, charttime, label
-            , avg(valuenum) as valuenum
-          from labs
-          group by subject_id, hadm_id, icustay_id, charttime, label
-    ) as sub
-    order by subject_id, hadm_id, icustay_id, label, charttime desc
+WITH max_creatinine AS (
+    SELECT ls.icustay_id, MAX(valuenum) AS max_valuenum
+    FROM labs ls
+    WHERE label = 'CREATININE'
+    GROUP BY ls.icustay_id, label
 )
 
-, lab_max as(
-    select subject_id, hadm_id, icustay_id, label
-        , max(valuenum) as valuenum
-    from labs
-    group by subject_id, hadm_id, icustay_id, label
+, max_lactate AS (
+    SELECT ls.icustay_id, MAX(valuenum) AS max_valuenum
+    FROM labs ls
+    WHERE label = 'LACTATE'
+    GROUP BY ls.icustay_id, label
 )
 
-, lab_both as(
-    select ll.subject_id, ll.hadm_id, ll.icustay_id, ll.label
-        , ll.valuenum as last_
-        , lm.valuenum as max_
-    from lab_last ll
-    inner join lab_max lm
-        on ll.icustay_id = lm.icustay_id
-        AND ll.label = lm.label
+, last_creatinine AS (
+    SELECT DISTINCT ON (icustay_id)
+        ls.icustay_id, ls.valuenum, ls.charttime
+    FROM labs ls
+    WHERE label = 'CREATININE'
+    ORDER BY icustay_id, charttime DESC
 )
 
-, creatinine as(
-    select subject_id, hadm_id, icustay_id
-        , last_ as creatinine_last
-        , max_ as creatinine_max
-    from lab_both
-    where label = 'CREATININE'
+, last_lactate AS (
+    SELECT DISTINCT ON (icustay_id)
+        ls.icustay_id, ls.valuenum, ls.charttime
+    FROM labs ls
+    WHERE label = 'LACTATE'
+    ORDER BY icustay_id, charttime DESC
 )
 
-, lactate as(
-    select subject_id, hadm_id, icustay_id
-        , last_ as lactate_last
-        , max_ as lactate_max
-    from lab_both
-    where label = 'LACTATE'
-)
-
-SELECT c.subject_id, c.hadm_id, c.icustay_id
-    , c.creatinine_last, c.creatinine_max
-    , l.lactate_last, l.lactate_max
-FROM creatinine c
-INNER JOIN lactate l
-    ON c.icustay_id = l.icustay_id
-
-
-
-
-
-
-
-
-
-
-
+SELECT ic.icustay_id
+    ,mc.max_valuenum AS creatinine_max
+    ,ml.max_valuenum AS lactate_max
+    ,lc.valuenum AS creatinine_last
+    ,ll.valuenum AS lactate_last
+FROM icustays as ic
+LEFT JOIN max_creatinine mc
+    ON ic.icustay_id = mc.icustay_id
+LEFT JOIN max_lactate ml
+    ON ic.icustay_id = ml.icustay_id
+LEFT JOIN last_creatinine lc
+    ON ic.icustay_id = lc.icustay_id
+LEFT JOIN last_lactate ll
+    ON ic.icustay_id = ll.icustay_id

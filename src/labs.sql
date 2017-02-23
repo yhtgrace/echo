@@ -57,7 +57,7 @@ create materialized view labs as
 
   left join labevents le
     on le.subject_id = ie.subject_id and le.hadm_id = ie.hadm_id
-    and (le.charttime between (ie.intime - interval '6' hour) and (ie.outtime + interval '6' hour))
+    --and (le.charttime between (ie.intime - interval '6' hour) and (ie.outtime + interval '6' hour))
     and le.ITEMID in
     (
       -- comment is: LABEL | CATEGORY | FLUID 

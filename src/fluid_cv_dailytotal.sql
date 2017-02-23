@@ -18,11 +18,11 @@ WHERE itemid in (
 	,'30030'--	Sodium Bicarbonate
 	,'30060'--	D5NS
 	,'30005'--	Fresh Frozen Plasma
-	,'30101'--	OR Crystalloid
+	,'30101'--	OR Crystalloid -------------?
 	,'30061'--	D5RL
 	,'30009'--	Albumin 25%
 	,'30190'--	NS .9%
-	,'30102'--	OR Colloid
+	,'30102'--	OR Colloid -----------------?
 	,'30143'--	3% Normal Saline
 	,'30160'--	D5 Normal Saline
 	,'30008'--	Albumin 5%
@@ -120,6 +120,23 @@ WHERE itemid in (
 	,'45073'--	IV fluid bolus
 	,'46207'--	OR LR
 	,'41380'--	nsbolus
+	-- add following Matthew's suggestions:
+	,'30001'--	Packed RBC's
+	,'30004'--	Washed PRBC's
+	,'30007'--	Cryoprecipitate
+	,'30063'--	IV Piggyback
+	,'30066'--	Carrier
+	,'30094'--	Other Blood Products
+	,'30161'--	.3% normal Saline
+	,'30168'--	Normal Saline_GU
+	,'30179'--	PRBC's
+	,'30180'--	Fresh Froz Plasma
+	,'30185'--	.9NS + 1:1 Heparin
+	,'30186'--	.45NS + 1:1 Heparin
+	,'30296'--	Sodium Chloride
+	,'30321'--	.45NS + .5:1 Heparin
+	,'30381'--	.9NS + 0.5:1 heparin
+	,'41491'--	fluid bolus
 )
 )
 

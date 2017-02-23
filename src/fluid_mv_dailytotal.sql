@@ -27,11 +27,30 @@ WITH patient_fluid AS
 		,'225941' -- D5 1/4NS
 		,'226371' -- OR Cryoprecipitate Intake
 		,'225171' -- 	Cryoprecipitate
-		,'226365' -- 	OR Colloid Intake
-		,'226367' -- 	OR FFP Intake
-		,'226375' -- 	PACU Crystalloid Intake
-		,'226371' -- 	OR Cryoprecipitate Intake	
-		,'227072' -- 	PACU FFP Intake	
+		,'226365' -- 	OR Colloid Intake --------?
+		,'226367' -- 	OR FFP Intake ------------?
+		,'226375' -- 	PACU Crystalloid Intake---?
+		,'226371' -- 	OR Cryoprecipitate Intake--?	
+		,'227072' -- 	PACU FFP Intake	-----------?
+		-- adding following Matthew's code
+		,'220862' --	Albumin 25%
+		,'220864' --	Albumin 5%
+		,'220970' --	Fresh Frozen Plasma
+		,'220995' --	Sodium Bicarbonate 8.4%
+		,'225158' --	NaCl 0.9%
+		,'225159' --	NaCl 0.45%
+		,'225161' --	NaCl 3% (Hypertonic Saline)
+		,'225168' --	Packed Red Blood Cells
+		,'225170' --	Platelets
+		,'225171' --	Cryoprecipitate
+		,'225823' --	D5 1/2NS
+		,'225825' --	D5NS
+		,'225827' --	D5LR
+		,'225828' --	LR
+		,'226089' --	Piggyback
+		,'227531' --	Mannitol
+		,'227533' --	Sodium Bicarbonate 8.4% (Amp)
+		,'228341' --	NaCl 23.4%
 		) 
 		and amount > 0  -- amount can be negative, often for REWRITTEN orders.  
 		and cancelreason = 0 -- some orders are cancelled

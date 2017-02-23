@@ -223,6 +223,8 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
     ,st.nsicu AS st_nsicu
 
     -- ventilation features
+    ,vf.first_day_vent as vf_first_day_vent
+    ,vf.duration as vf_duration
 
     -- fluid features
     ,fb.day1_input_ml as fb_day1_input_ml
@@ -297,3 +299,5 @@ LEFT JOIN service_type_MICU_SICU_NSICU st
     ON ic.icustay_id = st.icustay_id
 INNER JOIN fluid_balance_day123 fb
     ON ic.icustay_id = fb.icustay_id
+LEFT JOIN ventfeatures vf
+    ON ic.icustay_id = vf.icustay_id

@@ -199,6 +199,23 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
     ,ls.lab_tropt
     ,ls.lab_wbc
 
+    -- labs on first day of icustay: missingness
+    ,ls.lab_albumin IS NOT NULL AS ls.lab_albumin_
+    ,ls.lab_bicarbonate IS NOT NULL AS ls.lab_bicarbonate_
+    ,ls.lab_ckmb IS NOT NULL AS ls.lab_ckmb_
+    ,ls.lab_creatinine IS NOT NULL AS ls.lab_creatinine_
+    ,ls.lab_crp IS NOT NULL AS ls.lab_crp_
+    ,ls.lab_egfr IS NOT NULL AS ls.lab_egfr_
+    ,ls.lab_hematocrit IS NOT NULL AS ls.lab_hematocrit_
+    ,ls.lab_inr IS NOT NULL AS ls.lab_inr_
+    ,ls.lab_lactate IS NOT NULL AS ls.lab_lactate_
+    ,ls.lab_platelet IS NOT NULL AS ls.lab_platelet_
+    ,ls.lab_ntprobnp IS NOT NULL AS ls.lab_ntprobnp_
+    ,ls.lab_ph IS NOT NULL AS ls.lab_ph_
+    ,ls.lab_tropi IS NOT NULL AS ls.lab_tropi_
+    ,ls.lab_tropt IS NOT NULL AS ls.lab_tropt_
+    ,ls.lab_wbc IS NOT NULL AS ls.lab_wbc_
+
     -- filters
     -- true if patient was on vasopressor during icustay
     ,fs.ps_vaso AS filter_vaso 

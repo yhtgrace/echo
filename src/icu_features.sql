@@ -59,7 +59,7 @@ WITH filter_vaso AS (
 
 -- height in cm
 , height as (
-    select icustay_id
+    select subject_id
         , avg(  
             case 
                 when itemid in (920, 1394, 4187, 3486, 226707)
@@ -72,7 +72,7 @@ WITH filter_vaso AS (
     AND valuenum IS NOT NULL
     AND valuenum > 0
     AND valuenum < 500
-    GROUP BY icustay_id
+    GROUP BY subject_id
 )
 
 -- weight in kg
@@ -285,7 +285,7 @@ INNER JOIN patients pt
 INNER JOIN admissions am
     ON ic.hadm_id = am.hadm_id
 LEFT JOIN height ht
-    ON ic.icustay_id = ht.icustay_id
+    ON ic.subject_id = ht.subject_id
 LEFT JOIN weight wt
     ON ic.icustay_id = wt.icustay_id
 LEFT JOIN filters fs

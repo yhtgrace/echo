@@ -129,6 +129,7 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
     ,wt.valuenum/power(ht.valuenum/100, 2) as bmi -- bmi
     ,am.ethnicity -- race
     ,am.insurance -- insurance
+    ,ic.dbsource as dbsource
 
     -- comorbidities
     ,ex.congestive_heart_failure AS ex_congestive_heart_failure

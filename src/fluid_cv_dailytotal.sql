@@ -18,11 +18,11 @@ WHERE itemid in (
 	,'30030'--	Sodium Bicarbonate
 	,'30060'--	D5NS
 	,'30005'--	Fresh Frozen Plasma
-	,'30101'--	OR Crystalloid -------------?
+	--,'30101'--	OR Crystalloid -------------?
 	,'30061'--	D5RL
 	,'30009'--	Albumin 25%
 	,'30190'--	NS .9%
-	,'30102'--	OR Colloid -----------------?
+	--,'30102'--	OR Colloid -----------------?
 	,'30143'--	3% Normal Saline
 	,'30160'--	D5 Normal Saline
 	,'30008'--	Albumin 5%
@@ -143,7 +143,7 @@ WHERE itemid in (
 --SELECT subject_id, icustay_id, day_since_admission, sum(abs(amount)) as dailytotal_ml
 SELECT icustay_id, day_since_admission, sum(abs(amount)) as dailytotal_ml
 FROM fluid_icustay_join
-where amount is not null and amount > 0 and amount < 100000 and icustay_id is not null
+where amount is not null and amount > 0 and amount < 15000 and icustay_id is not null
 group by day_since_admission, icustay_id, subject_id --, hadm_id
 order by icustay_id, day_since_admission
 

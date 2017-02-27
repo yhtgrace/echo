@@ -30,7 +30,7 @@ from service_type
 ) 
 
 -- group by icustay_id
-select icustay_id
+select icustay_id, carevue, metavision
     ,CASE when sum(MICU) > 0 then 1 else 0 END AS MICU 
     ,CASE when sum(SICU) > 0 then 1 else 0 END AS SICU
     ,CASE WHEN sum(NSICU) > 0 then 1 else 0 END AS NSICU

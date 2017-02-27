@@ -17,7 +17,7 @@ WITH patient_fluid AS
 		,'220970' -- Fresh Frozen Plasma
 		,'225159' -- NaCl 0.45%
 		,'220864' -- Albumin 5%
-		,'226364' -- OR Crystalloid Intake
+		--,'226364' -- OR Crystalloid Intake
 		,'220995' -- Sodium Bicarbonate 8.4%
 		--,'225916' -- TPN w/ Lipids
 		,'225825' -- D5NS
@@ -25,12 +25,12 @@ WITH patient_fluid AS
 		,'225161' -- NaCl 3% (Hypertonic Saline)
 		,'225827' -- D5LR
 		,'225941' -- D5 1/4NS
-		,'226371' -- OR Cryoprecipitate Intake
+		--,'226371' -- OR Cryoprecipitate Intake
 		,'225171' -- 	Cryoprecipitate
-		,'226365' -- 	OR Colloid Intake --------?
-		,'226367' -- 	OR FFP Intake ------------?
+		--,'226365' -- 	OR Colloid Intake --------?
+		--,'226367' -- 	OR FFP Intake ------------?
 		,'226375' -- 	PACU Crystalloid Intake---?
-		,'226371' -- 	OR Cryoprecipitate Intake--?	
+		--,'226371' -- 	OR Cryoprecipitate Intake--?	
 		,'227072' -- 	PACU FFP Intake	-----------?
 		-- adding following Matthew's code
 		,'220862' --	Albumin 25%

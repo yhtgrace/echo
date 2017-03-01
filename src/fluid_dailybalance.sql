@@ -20,8 +20,8 @@ group by icustay_id, day_since_admission, dbsource
 
 , balance AS (select i.icustay_id, i.day_since_admission, i.dailytotal_input as daily_input_ml, o.dailytotal_ml as daily_output_ml
 ,(i.dailytotal_input- o.dailytotal_ml) as daily_balance_ml_pretruncate, dbsource
---from output_dailytotal as o
-from output_urine_total as o
+from output_dailytotal as o
+--from output_urine_total as o
 join input_dailytotal as i
 on o.icustay_id = i.icustay_id and o.day_since_admission = i.day_since_admission
 -- order by fm.subject_id, fm.chartdate

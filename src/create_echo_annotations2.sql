@@ -6,9 +6,9 @@ CREATE TABLE mimiciii.echo_annotations2
 (
   -- row_id serial primary key,
   subject_id integer NOT NULL,
-  hadm_id integer NOT NULL,
+  hadm_id integer,
+  key integer,
   new_time timestamp(0) without time zone,
-  pulmhtn integer NOT NULL,
   height integer,
   weight integer,
   sys integer,

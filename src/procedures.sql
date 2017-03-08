@@ -261,7 +261,7 @@ CASE WHEN itemid in (
 	,228166	--Impella Dressing Change
 	,228165	--Impella Daily Tubing Change
 	,228160	--Impella Aortic Pressure Tubing Change
-	) then 1 else 0 END AS toxclude,
+	) then 1 else 0 END AS toexclude,
 0 as bronch, 0 as cath, 0 as echo, 0 as pressor, 0 as rhc, 0 as thora, 0 as vent
 from mimiciii.datetimeevents
 )
@@ -282,7 +282,7 @@ select icustay_id, subject_id
     ,CASE WHEN sum(impella) > 0 then 1 else 0 END AS impella    
     ,CASE WHEN sum(pac) > 0 then 1 else 0 END AS pac
     ,CASE WHEN sum(port) > 0 then 1 else 0 END AS port   
-    ,CASE WHEN sum(toxclude) > 0 then 1 else 0 END AS toexclude   
+    ,CASE WHEN sum(toexclude) > 0 then 1 else 0 END AS toexclude   
     ,CASE WHEN sum(bronch) > 0 then 1 else 0 END AS bronch
     ,CASE WHEN sum(cath) > 0 then 1 else 0 END AS cath  
     ,CASE WHEN sum(echo) > 0 then 1 else 0 END AS echo

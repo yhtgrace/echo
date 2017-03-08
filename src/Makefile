@@ -11,5 +11,9 @@ clean:
 
 .PHONY: clean
 
+fluid_dailybalance: fluid_mv_dailytotal fluid_cv_dailytotal output_daily_total
+
+fluid_balance_day123: fluid_dailybalance
+
 %: %.sql
 	@$(PSQL) -f $<

@@ -265,20 +265,29 @@ SELECT ic.icustay_id, ic.hadm_id, ic.subject_id
     ,ed.contrast as ed_contrast
 
     -- echo annotations
-    ,ea.age as ea_age
-    ,ea.age_of_death as ea_age_of_death
-    ,ea.days_after_discharge_death as ea_days_after_discharge_death
-    ,ea.status as ea_status
-    ,ea.tv_pulm_htn as ea_tv_pulm_htn
-    ,ea.tv_tr as ea_tv_tr
-    ,ea.lv_cavity as ea_lv_cavity
-    ,ea.lv_diastolic as ea_lv_diastolic
-    ,ea.lv_systolic as ea_lv_systolic
-    ,ea.lv_wall as ea_lv_wall
-    ,ea.rv_cavity as ea_rv_cavity
-    ,ea.rv_diastolic_fluid as ea_rv_diastolic_fluid
-    ,ea.rv_systolic as ea_rv_systolic
-    ,ea.rv_wall as ea_rv_wall
+--    ,ea.height as ea_height
+--    ,ea.weight as ea_weight
+--    ,ea.sys as ea_sys
+--    ,ea.diastolic as ea_diastolic
+--    ,ea.hr as ea_hr
+--    ,ea.tv_pulm_htn as ea_tv_pulm_htn
+--    ,ea.tv_regurgitation as ea_tv_regurgitation
+--    ,ea.tv_stenosis as ea_tv_stenosis
+--    ,ea.lv_cavity as ea_lv_cavity
+--    ,ea.lv_diastolic as ea_lv_diastolic
+--    ,ea.lv_systolic as ea_lv_systolic
+--    ,ea.lv_wall as ea_lv_wall
+--    ,ea.rv_cavity as ea_rv_cavity
+--    ,ea.rv_volume_overload as ea_rv_volume_overload
+--    ,ea.rv_systolic as ea_rv_systolic
+--    ,ea.rv_wall as ea_rv_wall
+--    ,ea.av_regurgitation as ea_av_regurgitation
+--    ,ea.av_stenosis as ea_av_stenosis
+--    ,ea.mv_regurgitation as ea_mv_regurgitation
+--    ,ea.mv_stenosis as ea_mv_stenosis
+--    ,ea.la_cavity as ea_la_cavity
+--    ,ea.ra_dilated as ea_ra_dilated
+--    ,ea.ra_pressure as ea_ra_pressure
 
 FROM icustays ic
 INNER JOIN patients pt
@@ -301,9 +310,9 @@ LEFT JOIN secondary_outcomes so
     ON ic.icustay_id = so.icustay_id
 LEFT JOIN icustay_first_ed ed
     ON ic.icustay_id = ed.icustay_id
-LEFT JOIN echo_annotations_unique ea
-    ON ic.icustay_id = ea.icustay_id AND
-    ed.charttime IS NOT DISTINCT FROM ea.new_time
+--LEFT JOIN echo_annotations_unique ea
+--    ON ic.hadm_id = ea.hadm_id AND
+--    ed.charttime IS NOT DISTINCT FROM ea.new_time
 LEFT JOIN service_type_MICU_SICU_NSICU st
     ON ic.icustay_id = st.icustay_id
 INNER JOIN fluid_balance_day123 fb

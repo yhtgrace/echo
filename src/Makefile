@@ -11,9 +11,15 @@ clean:
 
 .PHONY: clean
 
-fluid_dailybalance: fluid_mv_dailytotal fluid_cv_dailytotal output_daily_total
+# mimic dependencies: angus_sepsis
 
-fluid_balance_day123: fluid_dailybalance
+all: icu_features
+
+icu_features: d_prescriptions_vaso chronic_dialysis hard_cardiogenic_filters 
+
+#fluid_dailybalance: fluid_mv_dailytotal fluid_cv_dailytotal output_daily_total
+
+#fluid_balance_day123: fluid_dailybalance
 
 %: %.sql
 	@$(PSQL) -f $<

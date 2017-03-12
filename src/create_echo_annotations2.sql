@@ -1,8 +1,8 @@
 ﻿-- Table: mimiciii.echo_annotations
 
-DROP TABLE IF EXISTS mimiciii.echo_annotations2 CASCADE;
+DROP TABLE IF EXISTS mimiciii.echo_annotations_unique CASCADE;
 
-CREATE TABLE mimiciii.echo_annotations2
+CREATE TABLE mimiciii.echo_annotations_unique
 (
   -- row_id serial primary key,
   subject_id integer NOT NULL,
@@ -38,5 +38,5 @@ WITH (
 );
 --ALTER TABLE mimiciii.echo_annnotations_unique
 --  OWNER TO postgres;
---COPY mimiciii.echo_annotations_unique FROM '/Users/yhtgrace/Documents/projects/echo/teemo/resources/echo_ann_unique.csv' CSV HEADER;
-COPY mimiciii.echo_annotations_unique FROM 'C:\Users\310050083\Documents\echo\resources\echo_2017-02-02-13-03-46=354000_modified.csv' CSV HEADER;
+COPY mimiciii.echo_annotations_unique FROM '/Users/yhtgrace/Documents/projects/echo/teemo/resources/echo_annotations_March2017/echo_2017-03-03-13-03-46-354000_modified.txt' CSV HEADER;
+--COPY mimiciii.echo_annotations_unique FROM 'C:\Users\310050083\Documents\echo\resources\echo_2017-02-02-13-03-46=354000_modified.csv' CSV HEADER;

@@ -6,20 +6,32 @@ SCHEMA=mimiciii
 
 PSQL=psql "dbname=$(DBNAME) options=--search_path=$(SCHEMA)" --username=$(DBUSER)
 
-clean:
-	@$(PSQL) -f clean.sql
+%: %.sql
+	@$(PSQL) -f $<
+
+# mimic dependencies: echodata, elixhauser_ahrq, angus_sepsis, apsiii, ventdurations
+
+all: features icu_features
+	
+features: echo_annotations filters lab_features service_type vent_features procedures_features
+
+echo_annotations: create_echo_annotations2
+	
+filters: d_prescriptions_vaso chronic_dialysis hard_cardiogenic_filters
+
+lab_features: labs secondary_outcomes labs_first_day
+
+vent_features: ventfeatures venttype 
+
+service_type: find_micu_servicetype 
+
+fluid_dailybalance: fluid_mv_dailytotal fluid_cv_dailytotal output_daily_total
+
+fluid_balance_day123: fluid_dailybalance
+
+procedures_features: procedures
 
 .PHONY: clean
 
-# mimic dependencies: angus_sepsis
-
-all: icu_features
-
-icu_features: d_prescriptions_vaso chronic_dialysis hard_cardiogenic_filters 
-
-#fluid_dailybalance: fluid_mv_dailytotal fluid_cv_dailytotal output_daily_total
-
-#fluid_balance_day123: fluid_dailybalance
-
-%: %.sql
-	@$(PSQL) -f $<
+clean:
+	@$(PSQL) -f clean.sql

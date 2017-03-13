@@ -1,4 +1,4 @@
---DROP MATERIALIZED VIEW IF EXISTS d_prescriptions_vaso CASCADE;
+-- DROP MATERIALIZED VIEW IF EXISTS d_prescriptions_vaso CASCADE;
 
 CREATE MATERIALIZED VIEW d_prescriptions_vaso AS
 

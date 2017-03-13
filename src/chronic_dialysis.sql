@@ -1,6 +1,6 @@
 ﻿set search_path to mimiciii;
 
---DROP MATERIALIZED VIEW IF EXISTS chronic_dialysis CASCADE; 
+-- DROP MATERIALIZED VIEW IF EXISTS chronic_dialysis CASCADE; 
 
 CREATE MATERIALIZED VIEW chronic_dialysis AS  
 

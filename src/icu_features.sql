@@ -160,10 +160,9 @@ WITH filter_vaso AS (
             as height -- height(cm) 
             ,case when wt.valuenum IS NOT NULL then wt.valuenum else ea.weight*0.45359237 end 
             as weight -- weight (kg)
-        --,wt.valuenum/power(ht.valuenum/100, 2) as bmi -- bmi
         ,am.ethnicity -- race
         ,am.insurance -- insurance
-        ,ic.dbsource as dbsource
+        --,ic.dbsource as dbsource
         
         -- filters
         -- true if patient was on vasopressor during icustay
@@ -304,6 +303,8 @@ WITH filter_vaso AS (
                 (ic.last_careunit in ('SICU', 'TSICU'))) then True
             else False end AS st_sicu
         ,st.nsicu = 1 AS st_nsicu
+        ,st.carevue = 1 OR dbsource = 'carevue' AS db_carevue
+        ,st.metavision = 1 OR dbsource = 'metavision' AS db_metavision
 
         -- ventilation features
         ,vf.first_day_vent as vf_first_day_vent
@@ -396,6 +397,8 @@ WITH filter_vaso AS (
 SELECT ifs.*
     ,icf.passed_filters as passed_filters
     ,icu.use_record as use_record
+    -- anything else that needs to be calculated
+    ,ifs.weight/power(ifs.height/100, 2) as bmi -- bmi
 FROM icu_features_ AS ifs
 LEFT JOIN icu_features_filtered icf
     ON icf.icustay_id = ifs.icustay_id

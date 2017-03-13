@@ -1,6 +1,6 @@
 
 -- This query extracts the ventilation events
---DROP MATERIALIZED VIEW IF EXISTS venttype CASCADE;
+-- DROP MATERIALIZED VIEW IF EXISTS venttype CASCADE;
 CREATE MATERIALIZED VIEW venttype AS
 select
   icustay_id, charttime

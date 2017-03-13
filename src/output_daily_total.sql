@@ -1,6 +1,6 @@
 ﻿set search_path to mimiciii;
 
-DROP MATERIALIZED VIEW IF EXISTS output_dailytotal CASCADE;
+-- DROP MATERIALIZED VIEW IF EXISTS output_dailytotal CASCADE;
 
 CREATE MATERIALIZED VIEW output_dailytotal AS 
 

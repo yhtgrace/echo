@@ -1,6 +1,6 @@
 ﻿-- Table: mimiciii.echo_annotations
 
---DROP TABLE IF EXISTS mimiciii.echo_annotations_unique CASCADE;
+-- DROP TABLE IF EXISTS mimiciii.echo_annotations_unique CASCADE;
 
 CREATE TABLE mimiciii.echo_annotations_unique
 (

@@ -3,7 +3,7 @@
 
 -- Have already confirmed that the unit of measurement is always the same: null or the correct unit
 
---DROP MATERIALIZED VIEW IF EXISTS labsfirstday_ CASCADE;
+-- DROP MATERIALIZED VIEW IF EXISTS labsfirstday_ CASCADE;
 
 create materialized view labsfirstday_ as
 

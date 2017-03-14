@@ -1,4 +1,5 @@
 drop materialized view if exists procedures cascade;
+drop materialized view if exists fluid_preadmission cascade;
 drop materialized view if exists fluid_balance_day123 cascade;
 drop materialized view if exists fluid_dailybalance cascade;
 drop materialized view if exists fluid_mv_dailytotal cascade;

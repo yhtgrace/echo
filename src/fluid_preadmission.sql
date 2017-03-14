@@ -16,15 +16,24 @@ select ie.icustay_id, sum(ie.amount) as sum
 from mimiciii.inputevents_cv ie, mimiciii.d_items ci
 where ie.itemid=ci.itemid and ie.itemid in (30054,30055,30101,30102,30103,30104,30105,30108,226361,226363,226364,226365,226367,226368,226369,226370,226371,226372,226375,226376,227070,227071,227072)
 group by icustay_id
+),
+output as 
+(select icustay_id, sum(value) as sum
+from mimiciii.outputevents 
+where itemid in (226633, 40060)
+group by icustay_id
 )
  
 select pt.icustay_id,
 case when mv.sum is not null then mv.sum
-when cv.sum is not null then cv.sum
-else null end as inputpreadm
+  when cv.sum is not null then cv.sum
+  else null end as inputpreadm,
+output.sum as outputpreadm
 from mimiciii.icustays pt
 left outer join mv
 on mv.icustay_id=pt.icustay_id
 left outer join cv
 on cv.icustay_id=pt.icustay_id
+left outer join output 
+on output.icustay_id = pt.icustay_id
 order by icustay_id

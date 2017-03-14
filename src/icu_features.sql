@@ -1,3 +1,5 @@
+﻿set search_path to mimiciii;
+
 DROP MATERIALIZED VIEW IF EXISTS icu_features CASCADE;
 
 CREATE MATERIALIZED VIEW icu_features AS
@@ -310,20 +312,24 @@ WITH filter_vaso AS (
         ,vf.first_day_vent as vf_first_day_vent
         ,vf.duration as vf_duration
 
-    --    -- fluid features
-    --    ,fb.day1_input_ml as fb_day1_input_ml
-    --    ,fb.day1_output_ml as fb_day1_output_ml
-    --    ,fb.day1_balance_ml as fb_day1_balance_ml
-    --    ,fb.day1_truncated as fb_day1_balance_truncated
-    --    ,fb.day2_input_ml as fb_day2_input_ml
-    --    ,fb.day2_output_ml as fb_day2_output_ml
-    --    ,fb.day2_balance_ml as fb_day2_balance_ml
-    --    ,fb.day2_truncated as fb_day2_balance_truncated
-    --    ,fb.day3_input_ml as fb_day3_input_ml
-    --    ,fb.day3_output_ml as fb_day3_output_ml
-    --    ,fb.day3_balance_ml as fb_day3_balance_ml
-    --    ,fb.day3_balance_truncated as fb_day3_balance_truncated
-    --    ,fb.balance_truncated as fb_balance_truncated
+        -- fluid features
+        ,fb.day1_input_ml as fb_day1_input_ml
+        ,fb.day1_output_ml as fb_day1_output_ml
+        ,fb.day1_balance_ml as fb_day1_balance_ml
+        ,fb.day1_balance_truncated as fb_day1_balance_truncated
+        ,fb.day2_input_ml as fb_day2_input_ml
+        ,fb.day2_output_ml as fb_day2_output_ml
+        ,fb.day2_balance_ml as fb_day2_balance_ml
+        ,fb.day2_balance_truncated as fb_day2_balance_truncated
+        ,fb.day3_input_ml as fb_day3_input_ml
+        ,fb.day3_output_ml as fb_day3_output_ml
+        ,fb.day3_balance_ml as fb_day3_balance_ml
+        ,fb.day3_balance_truncated as fb_day3_balance_truncated
+        ,fb.balance_truncated as fb_balance_truncated
+
+        -- fluid preadmission
+        ,fp.inputpreadm as fp_preadmission_input
+        ,fp.outputpreadm as fp_preadmission_ouput
 
         -- procedures features
         ,pc.arterialline as pc_arterialline
@@ -372,6 +378,10 @@ WITH filter_vaso AS (
         ON ic.icustay_id = wt.icustay_id
     LEFT JOIN procedures pc
         ON ic.icustay_id = pc.icustay_id
+    LEFT JOIN fluid_balance_day123 fb
+        ON ic.icustay_id = fb.icustay_id
+    LEFT JOIN fluid_preadmission fp
+        ON ic.icustay_id = fp.icustay_id
 )
 
 , icu_features_filtered as (

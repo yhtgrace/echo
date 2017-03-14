@@ -29,6 +29,8 @@ fluid_dailybalance: fluid_mv_dailytotal fluid_cv_dailytotal output_daily_total
 
 fluid_balance_day123: fluid_dailybalance
 
+fluid_preadmission_features: fluid_preadmission
+
 procedures_features: procedures
 
 .PHONY: clean

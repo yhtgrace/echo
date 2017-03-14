@@ -54,6 +54,12 @@ order by row_id
 )
 
 select * from composite
+where icustay_id not in 
+(select distinct(m.icustay_id)  -- remove duplicate icustay_ids that occur in both carevue and metavision inputevents
+from fluid_mv_dailytotal as m
+join fluid_cv_dailytotal as c
+on m.icustay_id = c.icustay_id
+order by m.icustay_id)
 order by row_id
 
 --select row_id, count(*)

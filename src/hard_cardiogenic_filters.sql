@@ -1,6 +1,6 @@
 -- exclude patients with hard cardiogenic filters
 -- for each patient in echo_features
-DROP MATERIALIZED VIEW IF EXISTS hard_cardiogenic_filters CASCADE;
+-- DROP MATERIALIZED VIEW IF EXISTS hard_cardiogenic_filters CASCADE;
 
 CREATE MATERIALIZED VIEW hard_cardiogenic_filters AS
 

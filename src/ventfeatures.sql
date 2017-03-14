@@ -1,13 +1,8 @@
 
-DROP TABLE IF EXISTS ventfeatures CASCADE;
-CREATE TABLE ventfeatures AS
+-- DROP MATERIALIZED VIEW IF EXISTS ventfeatures CASCADE;
+CREATE MATERIALIZED VIEW ventfeatures AS
 
-WITH diff AS(
-    SELECT (efv.charttime - vt.charttime) 
-    FROM echo_filter_vars efv
-    LEFT JOIN venttype vt
-        ON vt.icustay_id = efv.icustay_id
-), first_day_vent AS( 
+WITH first_day_vent AS( 
     SELECT
         vd.icustay_id
         -- on ventilator within -6 to +24 hourse of ICU admission
@@ -17,9 +12,9 @@ WITH diff AS(
     LEFT JOIN icustays ic
         on vd.icustay_id = ic.icustay_id
     -- only select ventilator events that overlap with -6 to +24 hours of ICU admission
-    WHERE ((((vd.starttime - ic.intime) >= INTERVAL '-6 hours') AND
+    WHERE ((((vd.starttime - ic.intime) >= INTERVAL '0 hours') AND
            ((vd.starttime - ic.intime) <= INTERVAL '24 hours')) OR
-          (((vd.endtime - ic.intime) >= INTERVAL '-6 hours') AND
+          (((vd.endtime - ic.intime) >= INTERVAL '0 hours') AND
            ((vd.endtime - ic.intime) <= INTERVAL '24 hours')) OR
           ((ic.intime >= vd.starttime) AND (ic.intime <= vd.endtime)))
           AND (vd.duration_hours > 0) --for some labels duration is 0? these are errors? 

@@ -1,7 +1,7 @@
 
 -- This query extracts the ventilation events
-DROP TABLE IF EXISTS venttype CASCADE;
-CREATE TABLE venttype AS
+-- DROP MATERIALIZED VIEW IF EXISTS venttype CASCADE;
+CREATE MATERIALIZED VIEW venttype AS
 select
   icustay_id, charttime
   -- flag indicating if this was a non-invasive ventilator event

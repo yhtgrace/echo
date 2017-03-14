@@ -2,7 +2,7 @@
 
 -- Have already confirmed that the unit of measurement is always the same: null or the correct unit
 
-DROP MATERIALIZED VIEW IF EXISTS labs CASCADE;
+-- DROP MATERIALIZED VIEW IF EXISTS labs CASCADE;
 
 create materialized view labs as
 ( -- begin query that extracts the data

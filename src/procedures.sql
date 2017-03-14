@@ -1,6 +1,6 @@
 ﻿set search_path to mimiciii;
 
-DROP MATERIALIZED VIEW IF EXISTS procedures CASCADE;
+-- DROP MATERIALIZED VIEW IF EXISTS procedures CASCADE;
 
 CREATE MATERIALIZED VIEW procedures AS 
 

@@ -4,7 +4,7 @@
 -- fluid_dailybalance
 -- fluid_dailybalance_wrt_icuadmission (fluid_balance_wrt_icuadmission.sql)
 
--- DROP MATERIALIZED VIEW IF EXISTS fluid_balance_day123 CASCADE;
+DROP MATERIALIZED VIEW IF EXISTS fluid_balance_day123 CASCADE;
 
 CREATE MATERIALIZED VIEW fluid_balance_day123 AS
 
@@ -37,9 +37,9 @@ select ic.row_id, ic.subject_id, ic.icustay_id, ic.hadm_id
 ,d1.daily_input_ml as day1_input_ml, d1.daily_output_ml as day1_output_ml, d1.cumulative_balance_ml as day1_balance_ml
 ,d2.daily_input_ml as day2_input_ml, d2.daily_output_ml as day2_output_ml, d2.cumulative_balance_ml as day2_balance_ml
 ,d3.daily_input_ml as day3_input_ml, d3.daily_output_ml as day3_output_ml, d3.cumulative_balance_ml as day3_balance_ml
-,d1.balance_truncated as d1_balance_truncated
-,d2.balance_truncated as d2_balance_truncated
-,d3.balance_truncated as d3_balance_truncated
+,d1.balance_truncated as day1_balance_truncated
+,d2.balance_truncated as day2_balance_truncated
+,d3.balance_truncated as day3_balance_truncated
 ,CASE 
   WHEN d1.balance_truncated=1 then 1
   WHEN d2.balance_truncated=1 then 1

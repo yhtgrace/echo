@@ -11,7 +11,7 @@ PSQL=psql "dbname=$(DBNAME) options=--search_path=$(SCHEMA)" --username=$(DBUSER
 
 # mimic dependencies: echodata, elixhauser_ahrq, angus_sepsis, apsiii, ventdurations
 
-all: features icu_features fluid_features
+all: features fluid_features icu_features
 	
 features: echo_annotations filters lab_features service_type vent_features procedures_features
 

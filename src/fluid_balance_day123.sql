@@ -4,7 +4,7 @@
 -- fluid_dailybalance
 -- fluid_dailybalance_wrt_icuadmission (fluid_balance_wrt_icuadmission.sql)
 
--- DROP MATERIALIZED VIEW IF EXISTS fluid_balance_day123 CASCADE;
+DROP MATERIALIZED VIEW IF EXISTS fluid_balance_day123 CASCADE;
 
 CREATE MATERIALIZED VIEW fluid_balance_day123 AS
 

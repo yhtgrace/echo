@@ -1,10 +1,10 @@
 ﻿set search_path to mimiciii;
 
--- DROP MATERIALIZED VIEW IF EXISTS fluid_cv_dailytotal CASCADE;
+DROP MATERIALIZED VIEW IF EXISTS fluid_cv_dailytotal CASCADE;
 
 CREATE MATERIALIZED VIEW fluid_cv_dailytotal AS 
 
-with fluid_icustay_join as (
+with fluid as (
 select s.subject_id, s.icustay_id, s.intime, f.charttime, age(f.charttime, s.intime) as elapsed, amount,
   extract(day from (f.charttime-s.intime)) as day_since_admission
 from mimiciii.inputevents_cv as f
@@ -121,15 +121,11 @@ WHERE itemid in (
 	,'46207'--	OR LR
 	,'41380'--	nsbolus
 	-- add following Matthew's suggestions:
-	,'30001'--	Packed RBC's
-	,'30004'--	Washed PRBC's
 	,'30007'--	Cryoprecipitate
 	,'30063'--	IV Piggyback
 	,'30066'--	Carrier
-	,'30094'--	Other Blood Products
 	,'30161'--	.3% normal Saline
 	,'30168'--	Normal Saline_GU
-	,'30179'--	PRBC's
 	,'30180'--	Fresh Froz Plasma
 	,'30185'--	.9NS + 1:1 Heparin
 	,'30186'--	.45NS + 1:1 Heparin
@@ -139,6 +135,34 @@ WHERE itemid in (
 	,'41491'--	fluid bolus
 )
 )
+
+-- blood has very small amounts (< 10ml).  we decided to interpret 1.0,... 6.0 as units of blood. 
+-- each unit is 300ml. 
+-- may want to include other blood products such as fresh frozen plasma
+, blood as (
+select s.subject_id, s.icustay_id, s.intime, f.charttime, age(f.charttime, s.intime) as elapsed, 
+case when amount in (1, 2, 3, 4, 5, 6) then amount*300
+     else amount
+     end as amount
+,extract(day from (f.charttime-s.intime)) as day_since_admission
+from mimiciii.inputevents_cv as f
+join mimiciii.icustays as s
+on f.icustay_id = s.icustay_id
+WHERE itemid in (
+	'30179'--	PRBC's
+	,'30001'--	Packed RBC's
+	,'30004'--	Washed PRBC's
+	,'30094'--	Other Blood Products
+  )
+)
+,fluid_icustay_join as (  -- combine fluid and blood
+select * from fluid
+union all 
+select * from blood
+)
+
+
+
 
 --SELECT subject_id, icustay_id, day_since_admission, sum(abs(amount)) as dailytotal_ml
 SELECT icustay_id, day_since_admission, sum(abs(amount)) as dailytotal_ml

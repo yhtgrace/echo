@@ -304,7 +304,7 @@ WITH filter_vaso AS (
             when (st.sicu IS NULL) AND ((ic.first_careunit in ('SICU', 'TSICU')) OR
                 (ic.last_careunit in ('SICU', 'TSICU'))) then True
             else False end AS st_sicu
-        ,st.nsicu = 1 AS st_nsicu
+        ,case when st.nsicu = 1 then True else False end AS st_nsicu
         ,st.carevue = 1 OR dbsource = 'carevue' AS db_carevue
         ,st.metavision = 1 OR dbsource = 'metavision' AS db_metavision
 
@@ -329,7 +329,7 @@ WITH filter_vaso AS (
 
         -- fluid preadmission
         ,fp.inputpreadm as fp_preadmission_input
-        ,fp.outputpreadm as fp_preadmission_ouput
+        ,fp.outputpreadm as fp_preadmission_output
 
         -- procedures features
         ,pc.arterialline as pc_arterialline
